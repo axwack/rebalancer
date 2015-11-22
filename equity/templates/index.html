@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Status of past rebalances:{% endblock %}
+
+
+{% block nav_active_list %}
+   <li class="active"><a href="{% url 'home' %}">Home</a></li>
+    <li class="dropdown">
+        <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+           New Rebalance <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>
+            <li><a href="#">Select an Existing Rebalance</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Accounts <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Create AAM/SSM <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'createNewModel' %}">Create New Model</a></li>
+            <li><a href="#">Update Existing Model</a></li>
+            <li><a href="#">Delete Model</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{%  endblock %}
+
+
+{% block primary %}
+ <fieldset>
+    <legend>Status of Rebalances:</legend>
+      <table class="table">
+        <thead>
+            <tr>
+                <th>Run ID</th>
+                <th>Status</th>
+                <th>Date Run</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tr class="success">
+            <td>1</td>
+            <td>TB - Monthly</td>
+            <td>01/04/2012</td>
+            <td>Approved</td>
+        </tr>
+      </table>
+    </fieldset>
+{% endblock %}
+
