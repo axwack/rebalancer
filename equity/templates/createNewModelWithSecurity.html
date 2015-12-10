@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Select Securities Selection{% endblock %}
+
+{% block nav_active_list %}
+       % block nav_active_list %}
+       <li class=""><a href="{% url 'home' %}">Home</a></li>
+    <li class="dropdown">
+        <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+           New Rebalance <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>
+            <li><a href="#">Select an Existing Rebalance</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Accounts <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Create AAM/SSM <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
+            <li><a href="#">Update Existing Model</a></li>
+            <li><a href="#">Delete Model</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{% endblock %}
+
+{% block primary %}
+    <div class =row>
+        <div class="col-sm-12 col-sm-offset">
+        <div class="page-header">
+            <h3>Model:  <span class="label label-default">{{ securitySelectionModelName }}</span></h3>
+        </div>
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-md-6">
+         </div>
+   </div>
+    <div class="row">
+       <div class="col-md-6">
+        <h4>Source Classifications:</h4>
+        <div id="treeView1"></div>
+       </div>
+
+        <div class="col-md-6">
+            <h4>Security Selection Model:</h4>
+            <div id="treeView2"></div>
+       </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">&nbsp;</div>
+        <div class="col-md-6">
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <button type="button" class="btn btn-primary " id="btn-add">Add</button>
+                <button type="button" class="btn btn-primary"id="btn-cancel">Cancel</button>
+            </div>
+        </div>
+   </div>
+
+{% endblock %}
+
+{% block script %}
+<link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
+<link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css"%}"/>
+<script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+    $("#btn-add").click(function(event){
+              event.preventDefault();
+        dataSource.sync();
+        /*$.ajax({
+            type: 'POST',
+            url: '../saveClassifications',
+            data: newDataSource,
+
+            success: function(data){
+
+                }
+        });*/
+    });
+
+   var classificationData = new kendo.data.HierarchicalDataSource({
+       transport: {
+            read: "../getClassifications",
+            contentType: "application/json",
+            datatype: "json"
+       },
+       schema: {
+           type:"json",
+            model: {
+              id: "id",
+              hasChildren: "hasChildNode"
+            },
+            data: function(data){
+
+                if (data.length > 0){
+                    return data;
+                } else {
+                    return [data];
+                }
+
+            }
+          /* ,
+          // parse: function(response) {
+              var nodes = [];
+              for (var i = 0; i < response.length; i++) {
+
+        debugger;
+                var _nodes = {
+                  id: response[i].id,
+                  childnode: response[i].children,
+
+                  //hasChildren: response[i].hasChildNode,
+                  data: response[i].data,
+                };
+
+                nodes.push(_nodes);
+              }
+              return nodes;
+             }
+             */
+        }
+   });
+
+   var newDataSource = new kendo.data.HierarchicalDataSource({
+/*
+       transport: {
+
+            create: {
+                url: "../saveClassifications",
+                dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
+            },
+            parameterMap: function(data, type) {
+                  if (type == "create") {
+                    // send the created data items as the "models" service parameter encoded in JSON
+                    return { models: kendo.stringify(data.models) };
+                  }
+                }
+              },
+              batch: true,
+              */
+       data: [{
+              classificationName : "Classification"
+          }],
+       schema: {
+
+          type: "json",
+          model: {
+              id: "id",
+              hasChildren: "hasChildNode"
+          }
+       }
+    });
+
+   $("#treeView1").kendoTreeView({
+    dragAndDrop: true,
+    dataSource: classificationData,
+    dataTextField: "classificationName",
+    dataValueField: "id",
+    change: function (e) {
+                classificationData.read();
+            },
+    drag: function (e) {
+
+        if (!$("#treeView1").data('kendoTreeView').dataItem(e.sourceNode).hasChildren && $.contains($('#treeView2')[0], e.dropTarget)) {
+            e.setStatusClass('k-add');
+
+           // var dataItem = classificationData.get(e.sourceNode);
+           // var selectedRow = $("treeView1").data('kendoTreeView').findByText(e.sourceNode.textContent);
+          //  $("#treeView1").data("kendoTreeView").remove(selectedRow);
+         } else {
+        e.setStatusClass('k-denied');
+          }
+    },
+
+    drop: function (e) {
+        newDataSource.add(e.sourceNode);
+        newDataSource.sync();
+
+/*
+    if($(e.destinationNode).hasClass("k-first") || $(e.destinationNode).hasClass("k-last") ){
+
+      if(e.dropPosition !== "before"){
+        e.preventDefault();
+
+      }
+
+    }else{
+
+      if(e.dropPosition == "over"){
+        e.preventDefault();
+      }
+         var treeview = $("#treeView1").data("kendoTreeView");
+         var bar = treeview.findByText(e.sourceNode.textContent);
+         treeview.remove(bar);
+
+         e.setValid(true);
+    }
+
+    var target = $(e.dropTarget).closest("[data-role=treeview]");
+    var treeView = this;
+    if (target.is("#treeView2")) {
+      var uid = $(e.sourceNode).attr("data-uid");
+      var prev = treeView.dataItem($(e.sourceNode).prev());
+      var next = treeView.dataItem($(e.sourceNode).next());
+      var parent = treeView.dataItem($(e.sourceNode).parent());
+
+        classificationData.data.add(e.sourceNode);
+
+      setTimeout(function () {
+        var item = $("#treeView2").data("kendoTreeView").dataSource.getByUid(uid);
+        if(item){
+          //these will be used later for identifying the original position of this item
+          item.set("item_prev", prev ? prev.uid : null);
+          item.set("item_next", next ? next.uid : null);
+          item.set("item_parent", parent.uid);
+          item.set("item_source", "treeView2");
+        }
+
+
+      });
+
+    }
+ */
+  }
+
+ });
+
+   var treeView2 = $("#treeView2").kendoTreeView({
+    dragAndDrop: true,
+    dataSource: newDataSource,
+    dataTextField: "classificationName",
+    dataValueField: "id",
+
+    drop:     function (e) {
+    var item = this.dataSource.getByUid($(e.sourceNode).attr("data-uid"));
+    //check next, prev, parent and source
+
+    if ($(e.dropTarget).closest("[data-role=treeview]").is("#treeView1")) {
+      if (e.sender._current.context.textContent != 'Omit') {
+        if (($(e.dropTarget).closest("li").attr("data-uid") != item.item_next) &&
+            ($(e.dropTarget).closest("li").attr("data-uid") != item.item_prev)) {
+          e.preventDefault();
+        }
+      }
+    }
+  },
+  	dragend: function(e) {
+    	console.log("Drag end", e.sourceNode, e.dropPosition, e.destinationNode);
+  	}
+});
+   });
+
+</script>
+
+{% endblock %}
