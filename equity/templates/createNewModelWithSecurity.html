@@ -86,21 +86,55 @@
 
 <script type="text/javascript">
 
-$(document).ready(function () {
+    var newDataSource = new kendo.data.HierarchicalDataSource({
+        data: [{
+            id: '0',
+            classificationName: "Classification"
+        }],
+        schema: {
+            type: "json",
+            model: {
+                id: "id",
+                hasChildren: "hasChildNode"
+            },
+            data: function (data) {
 
-    $("#btn-add").click(function(event){
-              event.preventDefault();
-        dataSource.sync();
-        /*$.ajax({
-            type: 'POST',
-            url: '../saveClassifications',
-            data: newDataSource,
-
-            success: function(data){
-
+                if (data.length > 0) {
+                    return data;
+                } else {
+                    return [data];
                 }
-        });*/
+
+            }
+        }
     });
+
+
+    function treeToJson(nodes) {
+
+        return $.map(nodes, function (n, i) {
+
+            var result = {
+                text: n.classificationName,
+                id: n.id,
+                expanded: n.expanded,
+                checked: n.checked,
+                hasChildren: n.hasChildren
+            };
+
+            if (n.hasChildren)
+                result.items = treeToJson(n.children.view());
+            return result;
+        });
+    }
+
+    var observableData = [{
+        id: 0,
+        classificationName: "Classification",
+        hasChildren: "true"
+    }];
+
+$(document).ready(function () {
 
    var classificationData = new kendo.data.HierarchicalDataSource({
        transport: {
@@ -145,36 +179,6 @@ $(document).ready(function () {
         }
    });
 
-   var newDataSource = new kendo.data.HierarchicalDataSource({
-/*
-       transport: {
-
-            create: {
-                url: "../saveClassifications",
-                dataType: "json" // "jsonp" is required for cross-domain requests; use "json" for same-domain requests
-            },
-            parameterMap: function(data, type) {
-                  if (type == "create") {
-                    // send the created data items as the "models" service parameter encoded in JSON
-                    return { models: kendo.stringify(data.models) };
-                  }
-                }
-              },
-              batch: true,
-              */
-       data: [{
-              classificationName : "Classification"
-          }],
-       schema: {
-
-          type: "json",
-          model: {
-              id: "id",
-              hasChildren: "hasChildNode"
-          }
-       }
-    });
-
    $("#treeView1").kendoTreeView({
     dragAndDrop: true,
     dataSource: classificationData,
@@ -197,8 +201,8 @@ $(document).ready(function () {
     },
 
     drop: function (e) {
-        newDataSource.add(e.sourceNode);
-        newDataSource.sync();
+        observableData.push({"id": 1, "classificationName": e.sourceNode.textContent});
+        debugger;
 
 /*
     if($(e.destinationNode).hasClass("k-first") || $(e.destinationNode).hasClass("k-last") ){
@@ -246,12 +250,11 @@ $(document).ready(function () {
     }
  */
   }
-
  });
 
    var treeView2 = $("#treeView2").kendoTreeView({
     dragAndDrop: true,
-    dataSource: newDataSource,
+       dataSource: kendo.observableHierarchy(observableData),
     dataTextField: "classificationName",
     dataValueField: "id",
 
@@ -272,7 +275,26 @@ $(document).ready(function () {
     	console.log("Drag end", e.sourceNode, e.dropPosition, e.destinationNode);
   	}
 });
-   });
+
+    $("#btn-add").on("click", function (e) {
+
+        var treeView2 = $("#treeView2").data("kendoTreeView");
+
+        var json = treeToJson(treeView2.dataSource.view());
+        console.log(JSON.stringify(json));
+
+        $.ajax({
+            type: "POST",
+            url: "../saveClassifications/",
+            async: true,
+            data: {
+                dataSource: newDataSource,
+                csrfmiddlewaretoken: '{{csrf_token}}'
+            }
+        });
+    });
+});
+
 
 </script>
 
