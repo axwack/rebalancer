@@ -115,15 +115,15 @@
         return $.map(nodes, function (n, i) {
 
             var result = {
-                text: n.classificationName,
+                classificationName: n.classificationName,
                 id: n.id,
                 expanded: n.expanded,
                 checked: n.checked,
-                hasChildren: n.hasChildren
+                hasChildNode: n.hasChildren
             };
 
             if (n.hasChildren)
-                result.items = treeToJson(n.children.view());
+                result.child = treeToJson(n.children.view());
             return result;
         });
     }
@@ -201,8 +201,6 @@ $(document).ready(function () {
     },
 
     drop: function (e) {
-        observableData.push({"id": 1, "classificationName": e.sourceNode.textContent});
-        debugger;
 
 /*
     if($(e.destinationNode).hasClass("k-first") || $(e.destinationNode).hasClass("k-last") ){
@@ -288,7 +286,7 @@ $(document).ready(function () {
             url: "../saveClassifications/",
             async: true,
             data: {
-                dataSource: newDataSource,
+                dataSource: JSON.stringify(json),
                 csrfmiddlewaretoken: '{{csrf_token}}'
             }
         });
