@@ -44,6 +44,8 @@
 {% endblock %}
 
 {% block primary %}
+    {{ csrf_token }} {% csrf_token %}
+    <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
     <div class =row>
         <div class="col-sm-12 col-sm-offset">
         <div class="page-header">
@@ -287,7 +289,8 @@ $(document).ready(function () {
             async: true,
             data: {
                 dataSource: JSON.stringify(json),
-                csrfmiddlewaretoken: '{{csrf_token}}'
+                csrfmiddlewaretoken: '{{ csrf_token  }}',
+                ssmModel: $("#securitySelectionPK").val()
             }
         });
     });

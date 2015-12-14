@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link href="..{{ STATIC_URL }}/bootstrap/css/sumoselect.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
+{% block nav_active_list %}
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'newRebalance' %}">New Rebalance</a></li>
+    <li><a href="{% url 'accounts' %}">Accounts</a></li>
+    <li class="active"><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li><a href="{% url 'newModel' %}">Create AAM/SSM</a></li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{% endblock %}
+{% block primary %}
+    <legend>Reference data</legend>
+    <fieldset>
+
+
+    </fieldset>
+{% endblock %}

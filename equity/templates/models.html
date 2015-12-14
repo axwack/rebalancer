@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Status of past rebalances:{% endblock %}
+{% block nav_active_list %}
+    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'newRebalance' %}">New Rebalance</a></li>
+    <li><a href="{% url 'accounts' %}">Accounts</a></li>
+    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">Create AAM/SSM <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Create New Model</a></li>
+            <li><a href="#">Update Existing Model</a></li>
+            <li><a href="#">Delete Model</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{% endblock %}
+{% block primary %}
+
+    <fieldset>
+        <legend>Models:</legend>
+        <div class="row-fluid">
+            <div id="treeGrid"/>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block script %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static "jqTreeGrid/styles/jqx.base.css" %}" type="text/css"/>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxcore.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxdata.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxbuttons.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxscrollbar.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxlistbox.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxdropdownlist.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxdatatable.js" %}"></script>
+    <script type="text/javascript" src="{% static "jqTreeGrid/jqxtreegrid.js" %}"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var source =
+            {
+                dataType: "json",
+                dataFields: [
+                    {name: 'id', type: 'number'},
+                    {name: 'classificationName', type: 'string'},
+                    {name: 'classificationLevel', type: 'number'}
+                ],
+                hierarchy: {
+                    keyDataField: {name: 'classificationName'},
+                    parentDataField: {name: 'classificationLevel'}
+                },
+                id: 'classificationName',
+                url: '/models/'
+            };
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+
+            // create Tree Grid
+            $("#treeGrid").jqxTreeGrid(
+                    {
+                        editable: true,
+                        source: '',
+                        renderToolbar: function (toolBar) {
+
+                        },
+                        columns: [
+                            {
+                                text: 'Classification Name',
+                                dataField: 'classificationName',
+                                width: 150,
+                                columnType: "template",
+
+                                createEditor: function (row, cellvalue, editor, cellText, width, height) {
+                                    // construct the editor
+                                    var source = [{%for className in classificationNames %}
+                                        "{{ className.classificationName }}",
+                                    {% endfor %} ];
+                                    editor.jqxDropDownList({
+                                        autoDropDownHeight: true,
+                                        source: source,
+                                        width: '100%',
+                                        height: '100%'
+                                    });
+                                },
+                                initEditor: function (row, cellvalue, editor, celltext, width, height) {
+                                    // set the editor's current value. The callback is called each time the editor is displayed.
+                                    editor.jqxDropDownList('selectItem', cellvalue);
+                                },
+                                getEditorValue: function (row, cellvalue, editor) {
+                                    // return the editor's value.
+                                    return editor.val();
+                                }
+                            },
+                            {text: 'Target Weight', dataField: 'tgtWeight', width: 100}
+                        ]
+                    });
+        });
+
+        var rowKey = null;
+        $("#treeGrid").on('rowSelect', function (event) {
+            var args = event.args;
+            rowKey = args.key;
+
+        });
+
+        $("#btn-add").click(function (event) {
+            {
+                console.log("event:" + event.toString());
+
+                $("#btn-add").attr('disabled', 'disabled');
+
+                if ($("#btn-add").attr('disabled') == 'disabled') {
+                    $("#treeGrid").jqxTreeGrid('expandRow', rowKey);
+                    // add new empty row.
+                    $("#treeGrid").jqxTreeGrid('addRow', null, {}, 'first', rowKey);
+                    // select the first row and clear the selection.
+                    $("#treeGrid").jqxTreeGrid('clearSelection');
+                    $("#treeGrid").jqxTreeGrid('selectRow', newRowID);
+                    // edit the new row.
+                    $("#treeGrid").jqxTreeGrid('beginRowEdit', newRowID);
+                    $("#treeGrid").jqxTreeGrid('render');
+                }
+                $("#btn-add").removeAttr('disabled');
+            }
+        });
+    </script>
+
+{% endblock %}

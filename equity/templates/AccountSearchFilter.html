@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block nav_active_list %}
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'newRebalance' %}">New Rebalance</a></li>
+    <li class="dropdown active">
+        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Accounts <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="#">Create Account Filter</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li><a href="{% url 'createNewModel' %}">Create AAM/SSM</a></li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{% endblock %}
+
+{% block title %}New Rebalance:{% endblock %}
+
+{% block primary %}
+
+    <div class="page-header">
+        <h1>Create an Account Filter</h1>
+    </div>
+    <form class="form-horizontal" action="{% url 'accountSearchFilter' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    {{ account_filter_form|crispy }}
+                    <input class="btn btn-primary" id="button" type="Submit" value="Save">
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="{% static "bootstrap/css/sumoselect.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static "bootstrap/js/jquery.sumoselect.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            select = $('.selectmultiple').SumoSelect();
+
+
+            var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+            var selectedArray = [];
+            /*
+             $(".form-horizontal").submit(function(e){
+
+             e.preventDefault();
+
+             $('.select').each(function(){
+             selectedArray.push($(this).val());
+             });
+
+             $.ajax({
+             type: $(this).attr('method'),
+             url: "
+            {% url 'accountSearchFilter' %}",
+             datatype: 'json',
+             data: {
+             data: $(this).serialize(),
+             csrfmiddlewaretoken:token
+             },
+
+             success: function (result) {
+
+             }
+             });
+             });
+             */
+        });
+    </script>
+{% endblock %}
