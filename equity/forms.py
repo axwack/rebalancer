@@ -143,3 +143,16 @@ class SecuritySelectionModelForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'createSecuritySelectionModels'
         self.helper.add_input(Submit('submit', 'Submit'))
+
+    def clean(self):
+        super(SecuritySelectionModelForm, self).clean()
+
+        cleaned_data = self.cleaned_data
+        ssm = SecuritySelectionModels.objects.filter(
+                securitySelectionModelName=cleaned_data['securitySelectionModelName'])
+
+        if ssm.exists() == 'True':
+            raise forms.ValidationError("Model Already exists.")
+
+        # Always return the full collection of cleaned data.
+        return cleaned_data

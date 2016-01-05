@@ -78,25 +78,6 @@ class ClassificationManager(models.Manager):
         # We need a list that will look like this ('T','Ticker')
 
 
-'''
-class ClassificationNames(models.Model):
-
-    objects = ClassificationManager()
-
-    classificationName = models.CharField(max_length=100)
-    classificationLevel = models.IntegerField()
-    parent = models.CharField(max_length=100)
-    parentId = models.ForeignKey('self', null=True)
-    source = models.CharField(max_length=100)
-
-    def natural_key(self):
-        return(self.classificationName)
-
-    def __unicode__(self):
-        return self.classificationName
-'''
-
-
 class ClassificationNames(AL_Node):
     objects = ClassificationManager()
     classificationLevel = models.IntegerField(null=True)
@@ -175,6 +156,7 @@ class SecurityClassification(models.Model):
 class TaxLot(models.Model):
     extTaxLotId = models.CharField(max_length=100)
     secId = models.ForeignKey(Security)
+    acctCd = models.ForeignKey(Account)
     longOrShort = (('L', 'Long'), ('S', 'Short'))
     tradeDate = models.DateField()
     settleDate = models.DateField()
@@ -182,6 +164,7 @@ class TaxLot(models.Model):
     costBaseAmount = models.FloatField()
     incBaseAmount = models.FloatField()
     unitBaseAmout = models.FloatField()
+    qtyFactor = models.FloatField  # Factor for converting from q*p => Amt = (q*p)*factor
 
 
 class Position(models.Model):
@@ -220,9 +203,27 @@ class AccountParameters(models.Model):
 
 
 class SecuritySelectionModels(models.Model):
-    securitySelectionModelName = models.CharField(max_length=100)
+    securitySelectionModelName = models.CharField(max_length=100, unique=True)
     classificationNames = models.ManyToManyField(ClassificationNames)
     userCreatedModel = models.TextField()
 
     def __unicode__(self):
-        return self.Name
+        return self.securitySelectionModelName
+
+
+class UserSecuritySelectionModel(AL_Node):
+    # example Telerik Model JSON
+    # [{"classificationName":"ssm","id":0,"hasChildNode":true,"child":[{"classificationName":"MBS","id":14,"hasChildNode":false},{"classificationName":"Common Stock","id":15,"hasChildNode":false}]}]
+    parent = models.ForeignKey('self',
+                               related_name='children_set',
+                               null=True,
+                               db_index=True)
+
+    SSM = models.ForeignKey(SecuritySelectionModels)
+    classificationNameNode = models.ForeignKey(ClassificationNames, null=True)
+    tgtWeight = models.FloatField()
+    currWeight = models.FloatField()
+    hasChildnode = models.BooleanField()
+    ext_model_id = models.IntegerField()
+
+    node_order_by = ['SSM', 'classificationNameNode', ]

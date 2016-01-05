@@ -1,12 +1,12 @@
 from django.http import HttpResponse, Http404, JsonResponse
-from django.template import RequestContext, Context
+from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.conf import settings
 from equity.models import Account, ClassificationNames, AllocationNodes
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser, FormParser
-from equity.serializers import AccountSerializer, ClassificationNamesSerializer
+from equity.serializers import AccountSerializer, ClassificationNamesSerializer, SecuritySelectionModelSerializers
 from rest_framework.decorators import parser_classes
 from equity.models import AllocationModels, AccountFilters, SecuritySelectionModels
 from django.core import serializers
@@ -14,6 +14,8 @@ from django.shortcuts import render
 from django.contrib import messages
 from forms import ModelNameForm, AccountParametersForm, AccountFilterForm, AccountSelectionForm, \
     SecuritySelectionModelForm
+
+from utils import JSONTree
 
 
 class JSONResponse(HttpResponse):
@@ -25,7 +27,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
 
 # Create your views here.
 def custom_proc(request):
@@ -207,9 +208,27 @@ def save_classifications(request):
         id = request.POST.get('ssmModel')
         ssmModel = SecuritySelectionModels.objects.get(pk=id)
         ssmModel.userCreatedModel = dataSource
+
+        result = JSONTree.JSONtoTreeBeard(dataSource)
+
         ssmModel.save()
 
-    return render('index.html', status=200)
+    return JSONResponse(id, status=201)
+
+
+def createModelWeights(request):
+    id = request.GET.get('id', '')
+    return render(request, "createNewModelWeights.html", {'id': id})
+
+
+def getModelTargetWeights(request):
+    id = request.GET.get('id', '')
+
+    ssmTree = SecuritySelectionModels.objects.get(id=id)
+
+    ssmSerializer = SecuritySelectionModelSerializers(ssmTree)
+
+    return JSONResponse(ssmSerializer.data, status=201)
 
 
 def Create_Model_Name(request):
@@ -264,15 +283,16 @@ def createSecuritySelectionModels(request):
     elif request.method == 'POST':
         form = SecuritySelectionModelForm(request.POST)
         if form.is_valid():
-            id = form.save();
+            ssm = form.save();
             messages.add_message(request, messages.SUCCESS, 'Successful Save.')
             c = {
-                "id": id.id
+                "id": ssm.id,
+                "securitySelectionModelName": ssm.securitySelectionModelName
             }
-            return render_to_response('createNewModelWithSecurity.html', c, context_instance=RequestContext(request))
+            return render(request, 'createNewModelWithSecurity.html', c)
 
         else:
-            form = SecuritySelectionModelForm()
+            return render(request, 'createNewModel.html', {'security_selection_model_form': form})
     else:
         form = SecuritySelectionModelForm()
     return render(request, 'createNewModel.html', {'security_selection_model_form': form})
