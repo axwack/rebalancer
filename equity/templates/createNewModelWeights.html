@@ -5,7 +5,7 @@
 {% block title %} Select Classification Weights {% endblock %}
 
 {% block nav_active_list %}
-    % block nav_active_list %}
+
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -28,7 +28,17 @@
             <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
         </ul>
     </li>
-    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Reference Data<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="">Positions</a></li>
+            <li><a href="#">Tax Lots</a></li>
+            <li><a href="#">Accounts</a></li>
+        </ul>
+    </li>
     <li><a href="{% url 'securities' %}">Securities</a></li>
     <li class="dropdown active">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -45,7 +55,6 @@
 {% endblock %}
 
 {% block primary %}
-
     <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
     <div class=row>
         <div class="col-sm-12 col-sm-offset">
@@ -61,7 +70,7 @@
     <div class="row">
         <div class="col-md-6">
             <h4>Model Weights:</h4>
-            <div id="treList"></div>
+            <div id="treeList"></div>
         </div>
     </div>
 
@@ -78,40 +87,85 @@
 {% endblock %}
 
 {% block script %}
+
     <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
     <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
-    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
 
+    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
     <script type="text/javascript">
+
+        $(document).ready(function () {
+            var id = {{ id }};
+
         var dataSource = new kendo.data.TreeListDataSource({
             transport: {
                 read: {
-                    url: "http://demos.telerik.com/kendo-ui/service/EmployeeDirectory",
-                    dataType: "jsonp"
+                    url: "../getModelTargetWeights?SSM_id=" + id,
+                    dataType: "json"
                 }
             },
             schema: {
+                parse: function (response) {
+                    NodeArray = [];
+                    if (response.length == undefined) {
+
+                        var node = {
+                            id: response.id,
+                            currWeight: response.currWeight,
+                            tgtWeight: response.tgtWeight,
+                            hasChildren: response.hasChildnode,
+                            parentId: response.parent,
+                            ext_model_id: response.ext_model_id,
+                            securitySelectionModelName: response.SSM.securitySelectionModelName,
+                            classificationNameNode: response.classificationNameNode,
+
+                        };
+                        NodeArray.push(node);
+                    } else {
+                        for (var i = 0; i < response.length; i++) {
+                            var node = {
+                                id: response[i].id,
+                                currWeight: response[i].currWeight,
+                                tgtWeight: response[i].tgtWeight,
+                                hasChildren: response[i].hasChildnode,
+                                parentId: response[i].parent.id,
+                                ext_model_id: response[i].ext_model_id,
+                                securitySelectionModelName: response[i].SSM.securitySelectionModelName,
+                                classificationNameNode: response[i].classificationNameNode.classificationName
+                            }
+                            NodeArray.push(node);
+                        }
+                    }
+                    console.log(NodeArray);
+                    return NodeArray;
+                },
                 model: {
-                    id: "EmployeeId",
+                    id: "id",
+                    parentId: "parentId",
+                    hasChildren: false,
                     fields: {
-                        EmployeeId: {type: "number", nullable: false},
-                        parentId: {field: "ReportsTo", nullable: true}
+                        id: {type: "number", nullable: false},
+                        parentId: {field: "parentId", type: "number", defaultValue: null},
+                        hasChildren: {type: "boolean", field: "hasChildren"}
                     }
                 }
             }
         });
 
-        $(document).ready(function () {
-
-            $("#treelist").kendoTreeList({
+            $("#treeList").kendoTreeList({
                 dataSource: dataSource,
-
-                selectable: true,
+                editable: true,
+                height: 540,
+                editable: true,
+                columns: [
+                    {field: "securitySelectionModelName", title: "Model Name", expandable: true},
+                    {field: "classificationNameNode", title: "Classification"},
+                    {field: "tgtWeight", title: "Target %"},
+                    {field: "currWeight", title: "Current %"}
+                ]
             });
 
         });
-
-
     </script>
 
 {% endblock %}
