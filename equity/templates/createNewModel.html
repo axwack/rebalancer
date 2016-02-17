@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
-
+{% include 'bootstrap3/layout/help_text_and_errors.html' %}
 
 {% block title %}Create New Security Selection Model:{% endblock %}
 
@@ -39,7 +39,7 @@
         </a>
         <ul class="dropdown-menu">
             <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
-            <li><a href="#">Update Existing Model</a></li>
+            <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
             <li><a href="#">Delete Model</a></li>
         </ul>
     </li>

@@ -47,15 +47,15 @@
         </a>
         <ul class="dropdown-menu">
             <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
-            <li><a href="#">Update Existing Model</a></li>
-            <li><a href="#">Delete Model</a></li>
+            <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
+            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
 {% endblock %}
 
 {% block primary %}
-    <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
+
     <div class=row>
         <div class="col-sm-12 col-sm-offset">
             <div class="page-header">
@@ -64,19 +64,20 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        {% csrf_token %}
+        <div class="col-md-12">
             <h4>Model Weights:</h4>
             <div id="treeList"></div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">&nbsp;</div>
-        <div class="col-md-6">
+        <div class="col-md-4">&nbsp;</div>
+        <div class="col-md-4">
             <div class="btn-group btn-group-sm" role="group" aria-label="...">
                 <button type="button" class="btn btn-primary " id="btn-add">Add</button>
                 <button type="button" class="btn btn-primary" id="btn-cancel">Cancel</button>
@@ -89,12 +90,13 @@
 {% block script %}
 
     <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.bootstrap.min.css" %}"/>
 
     <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
+
             var id = {{ id }};
 
         var dataSource = new kendo.data.TreeListDataSource({
@@ -102,6 +104,16 @@
                 read: {
                     url: "../getModelTargetWeights?SSM_id=" + id,
                     dataType: "json"
+                },
+                update: {
+                    url: "../updateModelWithTargetWeights/",
+                    type: "post",
+                    dataType: "json",
+
+                    headers: {
+                        "accept": "application/json;odata=verbose",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    }
                 }
             },
             schema: {
@@ -113,13 +125,20 @@
                             id: response.id,
                             currWeight: response.currWeight,
                             tgtWeight: response.tgtWeight,
-                            hasChildren: response.hasChildnode,
+                            hasChildren: response.hasChildNode,
                             parentId: response.parent,
                             ext_model_id: response.ext_model_id,
+                            SSM_id: response.SSM.id,
                             securitySelectionModelName: response.SSM.securitySelectionModelName,
-                            classificationNameNode: response.classificationNameNode,
+                            classificationName: response.classificationName,
 
                         };
+
+                        if (typeof response.classificationName == 'object' && response.classificationName != null) {
+                            node.classificationName = response.classificationName.classificationName;
+                            node.parentId = response.parent.id;
+                        }
+
                         NodeArray.push(node);
                     } else {
                         for (var i = 0; i < response.length; i++) {
@@ -127,16 +146,16 @@
                                 id: response[i].id,
                                 currWeight: response[i].currWeight,
                                 tgtWeight: response[i].tgtWeight,
-                                hasChildren: response[i].hasChildnode,
+                                hasChildren: response[i].hasChildNode,
                                 parentId: response[i].parent.id,
+                                SSM_id: response[i].SSM.id,
                                 ext_model_id: response[i].ext_model_id,
                                 securitySelectionModelName: response[i].SSM.securitySelectionModelName,
-                                classificationNameNode: response[i].classificationNameNode.classificationName
+                                classificationName: response[i].classificationName.classificationName
                             }
                             NodeArray.push(node);
                         }
                     }
-                    console.log(NodeArray);
                     return NodeArray;
                 },
                 model: {
@@ -145,26 +164,41 @@
                     hasChildren: false,
                     fields: {
                         id: {type: "number", nullable: false},
+                        SSM_id: {type: "number", field: "SSM_id"},
+                        ext_model_id: {type: "number", field: "ext_model_id"},
                         parentId: {field: "parentId", type: "number", defaultValue: null},
-                        hasChildren: {type: "boolean", field: "hasChildren"}
+                        hasChildren: {type: "boolean", field: "hasChildren"},
+                        tgtWeight: {type: 'number', editable: true},
+                        currWeight: {type: "number", editable: false},
+                        classificationName: {type: "string", editable: false},
+                        securitySelectionModelName: {type: "string", editable: false}
                     }
-                }
-            }
+                },
+                aggregate: [
+                    {field: "currWeight", aggregate: "sum"},
+                    {field: "tgtWeight", aggregate: "sum"},
+                ]
+            },
+            batch: true
         });
 
             $("#treeList").kendoTreeList({
                 dataSource: dataSource,
-                editable: true,
+                editable: {
+                    mode: "inline"
+                },
+                theme: "Bootstrap",
                 height: 540,
-                editable: true,
+
                 columns: [
                     {field: "securitySelectionModelName", title: "Model Name", expandable: true},
-                    {field: "classificationNameNode", title: "Classification"},
-                    {field: "tgtWeight", title: "Target %"},
-                    {field: "currWeight", title: "Current %"}
+                    {field: "classificationName", title: "Classification"},
+                    {field: "currWeight", title: "Current %", editable: false},
+                    {field: "tgtWeight", title: "Target %", editable: true},
+
+                    {command: ["edit"]}
                 ]
             });
-
         });
     </script>
 
