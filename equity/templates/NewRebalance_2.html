@@ -25,7 +25,17 @@
             <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
         </ul>
     </li>
-    <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Reference Data<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="">Positions</a></li>
+            <li><a href="#">Tax Lots</a></li>
+            <li><a href="#">Accounts</a></li>
+        </ul>
+    </li>
     <li><a href="{% url 'securities' %}">Securities</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"

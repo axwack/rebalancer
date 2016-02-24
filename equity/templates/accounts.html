@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block nav_active_list %}
+    <ul class="nav navbar-nav">
     <li><a href="{% url 'home' %}">Home</a></li>
     <li><a href="{% url 'newRebalance' %}">New Rebalance</a></li>
     <li><a href="{% url 'accounts' %}">Accounts</a></li>
@@ -24,6 +25,7 @@
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+    </ul>
 {% endblock %}
 
 {% block primary %}

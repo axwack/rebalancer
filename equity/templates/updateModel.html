@@ -5,7 +5,7 @@
 {% block title %} Select Securities Selection{% endblock %}
 
 {% block nav_active_list %}
-    % block nav_active_list %}
+    <ul class="nav navbar-nav">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -48,10 +48,11 @@
         <ul class="dropdown-menu">
             <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
             <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
-            <li><a href="#">Delete Model</a></li>
+            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+    </ul>
 {% endblock %}
 
 {% block primary %}

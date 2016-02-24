@@ -9,57 +9,51 @@ def JSONtoTreeBeard(obj):
 
     if (isinstance(obj, dict)) == True:
         treeString = obj
-    else:
-        treeString = json.loads(obj)
-
-        # hierarchy = dict(treeString)
-
         root = SecuritySelectionModels.objects.filter(pk=treeString[0]['id'])
 
-        if root:
-            rootNode = UserSecuritySelectionModel()
-            rootNode.currWeight = 0
+    elif isinstance(obj, list) == True:
+        treeString = obj.pop()
 
-            rootNode.SSM = SecuritySelectionModels.objects.get(pk=treeString[0]['id'])
-            id = treeString[0]['id']
+        root = SecuritySelectionModels.objects.filter(pk=treeString['id'])
+    else:
+        treeString = json.loads(obj)
+        root = SecuritySelectionModels.objects.filter(pk=treeString[0]['id'])
 
-            rootNode.classificationNameNode = None
-            rootNode.ext_model_id = treeString[0]['id']
-            rootNode.hasChildnode = treeString[0]['hasChildNode']
-            rootNode.tgtWeight = 0
-            root = UserSecuritySelectionModel.add_root(instance=rootNode)
+    if root:
+        rootNode = UserSecuritySelectionModel()
+        rootNode.currWeight = 0
+        rootNode.isSSMNameNode = True
+        rootNode.SSM = SecuritySelectionModels.objects.get(pk=treeString[0]['id'])
+        id = treeString[0]['id']
 
-        if treeString[0]['child']:
+        rootNode.classificationName = None
+        rootNode.ext_model_id = treeString[0]['id']
+        rootNode.hasChildNode = treeString[0]['hasChildNode']
+        rootNode.tgtWeight = 0
+        root = UserSecuritySelectionModel.add_root(instance=rootNode)
 
-            tempChild = treeString[0]['child']
+    if treeString[0]['child']:
 
-            for child in tempChild:
+        tempChild = treeString[0]['child']
 
-                node = createChildObj(child, root)
+        for child in tempChild:
 
-                if not node.is_child_of(root):
-                    root.add_child(instance=node)
-                    # root.add_child(instance=node)
+            node = createChildObj(child, root)
 
-                    # if child:
-                    #    if child['child'] and isinstance(child['child'], dict):
+            if not node.is_child_of(root):
+                root.add_child(instance=node)
 
-                    #       tempNode = createChildObj(child['child'], rootNode)
 
-                    #   elif child['child'] and isinstance(child['child'], list):
-
-                    #      tempNode = createChildObj(child['child'][0], rootNode)
-
-                    # node.add_child(instance=tempNode)
 
 def createChildObj(child, root):
     childObj = UserSecuritySelectionModel()
-    childObj.classificationNameNode = ClassificationNames.objects.get(classificationName=child['classificationName'])
+    childObj.classificationName = ClassificationNames.objects.get(classificationName=child['classificationName'])
     childObj.ext_model_id = child['id']
-    childObj.hasChildnode = child['hasChildNode']
+    childObj.hasChildNode = child['hasChildNode']
     childObj.SSM = root.SSM
     childObj.tgtWeight = 0
     childObj.currWeight = 0
+    childObj.isSSMNameNode = False
 
     if child['hasChildNode'] == True:
         root.add_child(instance=childObj)

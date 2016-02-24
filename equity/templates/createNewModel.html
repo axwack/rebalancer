@@ -8,6 +8,7 @@
 {% block title %}Create New Security Selection Model:{% endblock %}
 
 {% block nav_active_list %}
+    <ul class="nav navbar-nav">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -44,6 +45,7 @@
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+    </ul>
 {% endblock %}
 
 {% block primary %}

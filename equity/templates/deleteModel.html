@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %} Select Securities Selection{% endblock %}
+
+{% block nav_active_list %}
+    % block nav_active_list %}
+    <li class=""><a href="{% url 'home' %}">Home</a></li>
+    <li class="dropdown">
+        <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
+           aria-haspopup="true"
+           aria-expanded="false">
+            New Rebalance <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>
+            <li><a href="#">Select an Existing Rebalance</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Accounts <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Reference Data<span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="">Positions</a></li>
+            <li><a href="#">Tax Lots</a></li>
+            <li><a href="#">Accounts</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'securities' %}">Securities</a></li>
+    <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">
+            Create AAM/SSM <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
+            <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
+            <li><a href="#">Delete Model</a></li>
+        </ul>
+    </li>
+    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+{% endblock %}
+
+{% block primary %}
+    <span id="notification" style="display:none;"></span>
+    <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
+    <div class=row>
+        <div class="col-sm-12 col-sm-offset">
+            <div class="page-header">
+                <h3>Delete Security Selection Models</h3>
+            </div>
+        </div>
+    </div>
+    <div class=row>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h4>Select a model:</h4>
+                <div id="modelDropDownlist"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+
+        <div class="col-md-6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">&nbsp;</div>
+        <div class="col-md-6">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
+
+
+    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+
+    <script id="successTemplate" type="text/x-kendo-template">
+        <div class="delete-success">
+            <img src="{% static "images/success-icon.png" %}"/>
+            <h3>#= message #</h3>
+        </div>
+    </script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var notification = $("#notification").kendoNotification({
+                position: {
+                    pinned: true,
+                    top: 30,
+                    right: 30
+                },
+                autoHideAfter: 0,
+                stacking: "down",
+                templates: [{
+                    type: "delete-success",
+                    template: $("#successTemplate").html()
+                }]
+            }).data("kendoNotification");
+
+
+            $("#modelDropDownlist").kendoDropDownList({
+                index: 0,
+                theme: "bootstrap",
+                dataTextField: "securitySelectionModelName",
+                dataValueField: "id",
+                dataSource: {
+                    type: "json", // specifies data protocol
+                    transport: {
+                        read: "../getSSMList/"
+                    },
+
+                },
+                select: onSSMChange
+            });
+
+
+            function onSSMChange(e) {
+
+                var dataItem = this.dataItem(e.item);
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'deleteModel' %}" + dataItem.id + "/",
+                    async: true,
+                    data: {
+
+                        csrfmiddlewaretoken: '{{ csrf_token  }}'
+
+                    },
+                    success: function (response) {
+
+                        notification.show({
+                            message: "Delete Successful."
+                        }, "delete-success");
+                        //window.location.href = "../deleteSecuritySelectionModels/";
+                    }
+                });
+
+                //window.location = '../deleteSecuritySelectionModels/' + dataItem.id;
+            }
+
+            $(document).one("kendo:pageUnload", function () {
+                if (notification) {
+                    notification.hide();
+                }
+            });
+        });
+
+    </script>
+    <style>
+
+        /* Success template */
+        .k-notification-delete-success.k-group {
+            background: rgba(0%, 60%, 0%, .7);
+            color: #fff;
+        }
+
+        .delete-success {
+            width: 240px;
+            height: 100px;
+            padding: 0 30px;
+            line-height: 100px;
+        }
+
+        .delete-success h3 {
+            font-size: 1.7em;
+            font-weight: normal;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .delete-success img {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+    </style>
+{% endblock %}

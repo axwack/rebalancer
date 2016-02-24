@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from equity.models import Account, ClassificationNames, AllocationNodes, AllocationModels, AccountFilters, \
-    SecuritySelectionModels
+    SecuritySelectionModels, UserSecuritySelectionModel
 
 
 class AccountSerializer(serializers.Serializer):
@@ -66,4 +66,11 @@ class AccountFilterSerializer(serializers.ModelSerializer):
 class SecuritySelectionModelSerializers(serializers.ModelSerializer):
     class Meta:
         model = SecuritySelectionModels()
-        fields = ('securitySelectionModelName', 'classificationNames', 'userCreatedModel')
+        fields = ('id', 'securitySelectionModelName', 'classificationNames',)
+
+
+class UserSecuritySelectionModelSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = UserSecuritySelectionModel()
+        fields = '__all__'
+        depth = 1

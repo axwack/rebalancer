@@ -5,7 +5,7 @@
 {% block title %} Select Securities Selection{% endblock %}
 
 {% block nav_active_list %}
-    % block nav_active_list %}
+    <ul class="nav navbar-nav">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -86,7 +86,7 @@
             </div>
         </div>
     </div>
-
+    </ul>
 {% endblock %}
 
 {% block script %}
@@ -137,9 +137,6 @@
                         url: "{%  url 'getClassifications' %}",
                         contentType: "application/json",
                         datatype: "json",
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader('Action', 'Update')
-                        }
                     }
                 },
                 schema: {
@@ -302,12 +299,12 @@
 
             $("#btn-update").on("click", function (e) {
 
-
                 var treeView2 = $("#treeView2").data("kendoTreeView");
 
                 var json = treeToJson(treeView2.dataSource.view());
 
                 console.log(JSON.stringify(json));
+
 
                 $.ajax({
                     type: "POST",
@@ -319,9 +316,10 @@
                         ssmModel: $("#securitySelectionPK").val()
                     },
                     success: function (response) {
-                        window.location.href = "../createModelWeights?id=" + response;
+                        window.location.href = "{% url 'createModelWeights' %}?id={{ id }}&SSMModel={{ securitySelectionModelName }}";
                     }
                 });
+
             });
 
             $("#btn-cancel").on("click", function (e) {

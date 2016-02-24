@@ -75,8 +75,6 @@ class ClassificationManager(models.Manager):
     def get_by_natural_key(self, classificationName):
         return self.get(classificationName=classificationName)
 
-        # We need a list that will look like this ('T','Ticker')
-
 
 class ClassificationNames(AL_Node):
     objects = ClassificationManager()
@@ -205,25 +203,28 @@ class AccountParameters(models.Model):
 class SecuritySelectionModels(models.Model):
     securitySelectionModelName = models.CharField(max_length=100, unique=True)
     classificationNames = models.ManyToManyField(ClassificationNames)
+
     userCreatedModel = models.TextField()
 
     def __unicode__(self):
         return self.securitySelectionModelName
 
+    def natural_key(self):
+        return self.securitySelectionModelName
+
 
 class UserSecuritySelectionModel(AL_Node):
-    # example Telerik Model JSON
-    # [{"classificationName":"ssm","id":0,"hasChildNode":true,"child":[{"classificationName":"MBS","id":14,"hasChildNode":false},{"classificationName":"Common Stock","id":15,"hasChildNode":false}]}]
+
     parent = models.ForeignKey('self',
                                related_name='children_set',
                                null=True,
                                db_index=True)
-
+    isSSMNameNode = models.BooleanField()
     SSM = models.ForeignKey(SecuritySelectionModels)
-    classificationNameNode = models.ForeignKey(ClassificationNames, null=True)
+    classificationName = models.ForeignKey(ClassificationNames, null=True)
     tgtWeight = models.FloatField()
     currWeight = models.FloatField()
-    hasChildnode = models.BooleanField()
+    hasChildNode = models.BooleanField()
     ext_model_id = models.IntegerField()
 
-    node_order_by = ['SSM', 'classificationNameNode', ]
+    node_order_by = ['ext_model_id']
