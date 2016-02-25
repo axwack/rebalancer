@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - rebalancerDB@localhost" uuid="905ce3d5-38a0-4355-aa47-e834a3127f7b">
+      <secret-storage>master_key</secret-storage>
+      <user-name>vincentlee</user-name>
+      <schema-pattern>rebalancerDB.pg_catalog rebalancerDB.public</schema-pattern>
+      <default-schemas>rebalancerDB.pg_catalog rebalancerDB.public</default-schemas>
+    </data-source>
+  </component>
+</project>

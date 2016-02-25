@@ -1,0 +1,16 @@
+insert into equity_classificationnames(classificationName,classificationLevel,source) values (1,'Equity',1,'OWNER');
+insert into equity_classificationnames values (2,'Fixed Income',1,'OWNER');
+insert into equity_classificationnames values (3,'Money Market',1,'OWNER');
+insert into equity_classificationnames values (4,'Derivative',1,'OWNER');
+insert into equity_classificationnames values (5,'Asia',1,'OWNER');
+insert into equity_classificationnames values (6,'Europe',1,'OWNER');
+insert into equity_classificationnames values (7,'Australia',1,'OWNER');
+insert into equity_classificationnames values (8,'Africa',1,'OWNER');
+insert into equity_classificationnames values (9,'N. America',1,'OWNER');
+insert into equity_classificationnames values (10,'Corporate',2,'OWNER');
+insert into equity_classificationnames values (11,'Mortgage',2,'OWNER');
+insert into equity_classificationnames values (12,'Repo',2,'OWNER');
+insert into equity_classificationnames values (13,'CDS',3,'OWNER');
+insert into equity_classificationnames values (14,'IR Swap',3,'OWNER');
+insert into equity_classificationnames values (15,'California',3,'OWNER');
+insert into equity_classificationnames values (16,'New York',3,'OWNER');
