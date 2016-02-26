@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='classificationames',
+            model_name='classificationnames',
             name='classificationLevel',
             field=models.IntegerField(),
         ),
