@@ -169,7 +169,18 @@
                             ext_model_id: {type: "number", field: "ext_model_id"},
                             parentId: {field: "parentId", type: "number", defaultValue: null},
                             hasChildren: {type: "boolean", field: "hasChildren"},
-                            tgtWeight: {type: 'number', editable: true},
+                            tgtWeight: {type: 'number', editable: true,
+                                            validation: {
+                                                tgtWeightvalidation: function (input) {
+                                                    if (input.is("[name='tgtWeight']") && input.val() != "" && input.val() < 0 || input.val() > 100) {
+                                                        input.attr("data-tgtWeightvalidation-msg", "Value has to be greater than 0 and less than 100.");
+                                                        return false;
+                                                    } else {
+                                                        return true;
+                                                    }
+                                                }
+                                            }
+                            },
                             currWeight: {type: "number", editable: false},
                             classificationName: {type: "string", editable: false},
                             securitySelectionModelName: {type: "string", editable: false}
@@ -230,6 +241,7 @@
                 }
 
             };
+
         });
     </script>
 

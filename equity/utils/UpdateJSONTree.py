@@ -17,42 +17,70 @@ def UpdateSSM(topNode, SSMModel):
                 tempNode = childOfRootNodes.get_root()
                 previousNode=childOfRootNodes
 
-                #if not tempNode.id==childOfRootNodes.id:
-                #    tempNode.add_child(instance=childOfRootNodes)
-
             if topNode['child']:
-                    for child in topNode['child']:
-                        #child = getChildNodes(indexofChildNode)
-                        if child.has_key('ext_model_id'):
-                            previousNode = get(child['id'], SSMModel)
-                        else:
-                            #the node isn't in the model so add it.
-                            newChild = UserSecuritySelectionModel()
-                            newChild.hasChildNode=False
-                            newChild.tgtWeight = 0.0
-                            newChild.currWeight = 0.0
 
-                            classification = ClassificationNames.objects.get(classificationName=child['classificationName'])
+                if topNode.has_key('ext_model_id'):
+                    previousNode = get(topNode['child']['ext_model_id'], SSMModel)
 
-                            newChild.classificationName = classification
-                            newChild.ext_model_id = classification.id
-                            newChild.SSM = SecuritySelectionModels.objects.get(id=tempNode.ext_model_id)
+                childNodeOfNode = returnChild(node)
 
-                            newChild.isSSMNameNode=False
+                if not childNodeOfNode is None:
+                    childOfPreviousNode = createUserSecuritySelectionModel(childNodeOfNode, SSMModel)
+                    previousNode.add_child(instance=childOfPreviousNode)
 
-                            if previousNode is None:
-                                previousNode=tempNode
+            else:
+                #the node isn't in the model so add it.
 
-                            previousNode.add_sibling(pos='sorted-sibling',instance=newChild )
+                newChild = UserSecuritySelectionModel()
+                newChild.hasChildNode=False
+                newChild.tgtWeight = 0.0
+                newChild.currWeight = 0.0
+
+                classification = ClassificationNames.objects.get(classificationName=child['classificationName'])
+
+                newChild.classificationName = classification
+                newChild.ext_model_id = classification.id
+                newChild.SSM = SecuritySelectionModels.objects.get(id=tempNode.ext_model_id)
+
+                newChild.isSSMNameNode=False
+
+                if previousNode is None:
+                    previousNode=tempNode
+
+                previousNode.add_sibling(pos='sorted-sibling',instance=newChild )
 
         except MultipleObjectsReturned:
             raise Http404("More than one Security Selection Model was returned. Is there only one?")
 
-def getChildNodes(child):
+def createUserSecuritySelectionModel(childOfPreviousNode, SSMModel):
 
-    return child['child']
-    # add the child to the object
+    if isinstance(childOfPreviousNode, list)==True:
+        childOfPreviousNode = childOfPreviousNode.pop()
 
-    return childObj
+    newChild = UserSecuritySelectionModel()
 
+    newChild.hasChildNode = childOfPreviousNode['hasChildNode']
 
+    newChild.tgtWeight = 0.0
+    newChild.currWeight = 0.0
+
+    classification = ClassificationNames.objects.get(classificationName=childOfPreviousNode['classificationName'])
+
+    newChild.classificationName = classification
+    newChild.ext_model_id = classification.id
+    newChild.SSM = SecuritySelectionModels.objects.get(id=SSMModel)
+
+    newChild.isSSMNameNode = False
+
+    return newChild
+
+def returnChild(node):
+    if isinstance(node,list):
+        node.pop()
+
+    if isinstance(node, dict):
+        for k, v in node.iteritems():
+            if 'child' in k:
+                return v
+            else:
+                return returnChild(v)
