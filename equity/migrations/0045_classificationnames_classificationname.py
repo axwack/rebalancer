@@ -16,4 +16,4 @@ class Migration(migrations.Migration):
     #        field=models.CharField(default='Classification', max_length=100),
     #        preserve_default=False,
     #    ),
-    ]
+    # ]
