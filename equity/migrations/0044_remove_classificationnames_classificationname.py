@@ -10,15 +10,16 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='classificationnames',
-            name='classificationName',
-            field=models.CharField(max_length=100),
-            preserve_default=False,
-        ),
-        migrations.RemoveField(
-            model_name='classificationnames',
-            name='classificationName',
-        ),
+        #
+        # migrations.AddField(
+        #    model_name='classificationnames',
+        #    name='classificationName',
+        #    field=models.CharField(max_length=100),
+        #    preserve_default=False,
+        # ),
+        # migrations.RemoveField(
+        #    model_name='classificationnames',
+        #    name='classificationName',
+        # ),
 
     ]
