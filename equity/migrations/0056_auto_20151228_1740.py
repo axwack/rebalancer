@@ -11,22 +11,22 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-       #
-       # migrations.RenameField(
-       #     model_name='usersecurityselectionmodel',
-       #     old_name='securitySelectionModelName',
-       #     new_name='SSM',
-       # ),
-      #
-       # migrations.AddField(
-       #     model_name='usersecurityselectionmodel',
-       #     name='classificationNameNode',
-        #    field=models.ForeignKey(default=1, to='equity.ClassificationNames'),
-         #   preserve_default=False,
-        #),
-       # migrations.AlterField(
-        #    model_name='securityselectionmodels',
-        #    name='securityselectionmodelname',
-         #   field=models.CharField(unique=True, max_length=100),
-     #   ),
+
+        migrations.RenameField(
+            model_name='usersecurityselectionmodel',
+            old_name='securitySelectionModelName',
+            new_name='SSM',
+        ),
+
+        migrations.AddField(
+            model_name='usersecurityselectionmodel',
+            name='classificationNameNode',
+            field=models.ForeignKey(default=1, to='equity.ClassificationNames'),
+            preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name='securityselectionmodels',
+            name='securityselectionmodelname',
+            field=models.CharField(unique=True, max_length=100),
+        ),
     ]
