@@ -10,12 +10,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='classificationNames',
-            name='classificationLevel',
-            field=models.IntegerField(default='1'),
-            preserve_default=False,
-        ),
+
+        # migrations.AddField(
+        #     model_name='classificationNames',
+        #     name='classificationLevel',
+        #     field=models.IntegerField(default='1'),
+        #     preserve_default=False,
+        # ),
         migrations.AddField(
             model_name='classificationNames',
             name='parentId_id',
