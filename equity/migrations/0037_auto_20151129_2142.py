@@ -17,12 +17,12 @@ class Migration(migrations.Migration):
         #     field=models.IntegerField(default='1'),
         #     preserve_default=False,
         # ),
-        migrations.AddField(
-            model_name='classificationNames',
-            name='parentId_id',
-            field=models.IntegerField(default='1'),
-            preserve_default=False,
-        ),
+        # migrations.AddField(
+        #    model_name='classificationNames',
+        #    name='parentId_id',
+        #    field=models.IntegerField(default='1'),
+        #    preserve_default=False,
+        # ),
         migrations.RemoveField(
             model_name='classificationnames',
             name='classificationLevel',
