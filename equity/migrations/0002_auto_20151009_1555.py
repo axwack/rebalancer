@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('classificationName', models.CharField(max_length=100)),
-                ('classificationLevel', models.IntegerField(),
+                ('classificationLevel', models.IntegerField()),
                  # ('classificationLevel', models.CharField(max_length=100)),
                 ('source', models.CharField(max_length=100)),
             ],
