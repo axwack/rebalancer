@@ -11,18 +11,18 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='usersecurityselectionmodel',
-            name='SSM',
-        ),
-        migrations.RemoveField(
-            model_name='usersecurityselectionmodel',
-            name='classificationNameNode',
-        ),
-        migrations.RemoveField(
-            model_name='usersecurityselectionmodel',
-            name='parent',
-        ),
+        # migrations.RemoveField(
+        #    model_name='usersecurityselectionmodel',
+        #    name='SSM',
+        # ),
+        # migrations.RemoveField(
+        #    model_name='usersecurityselectionmodel',
+        #    name='classificationNameNode',
+        # ),
+        # migrations.RemoveField(
+        #    model_name='usersecurityselectionmodel',
+        #    name='parent',
+        # ),
         migrations.DeleteModel(
             name='UserSecuritySelectionModel',
         ),
