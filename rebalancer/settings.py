@@ -30,15 +30,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'registration',
-    'django.contrib.admin',
+
     'django.contrib.auth',
-    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',
 
+    'django.contrib.admin',
     # Third Party
     'crispy_forms',
     'rest_framework',
