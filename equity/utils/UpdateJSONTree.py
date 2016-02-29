@@ -14,7 +14,8 @@ def UpdateSSM(topNode, SSMModel):
         topNode = topNode.pop()
 
         try:
-            childOfRootNodes = UserSecuritySelectionModel.objects.get(ext_model_id=topNode['ext_model_id']) #Get the rootNode in the datasource
+            # Get the rootNode in the datasource
+            childOfRootNodes = UserSecuritySelectionModel.objects.get(ext_model_id=topNode['ext_model_id'])
 
             if childOfRootNodes.is_root():
                 tempNode = childOfRootNodes.get_root()
@@ -29,8 +30,8 @@ def UpdateSSM(topNode, SSMModel):
                     for eachChildinTopNode in topNode['child']:
                         ParentOfPreviousNode = UserSecuritySelectionModel.objects.get(
                             ext_model_id=eachChildinTopNode['ext_model_id'], SSM_id=SSMModel)
-                        allChildrenOfParentPreviousNode = returnChild(ParentOfPreviousNode, eachChildinTopNode,
-                                                                      SSMModel)
+                        # check to see if it is an actual child, if so and the hasChildNode is false set to True
+                        allChildrenOfParentPreviousNode = returnChild(ParentOfPreviousNode, eachChildinTopNode, SSMModel)
 
 
         except MultipleObjectsReturned:
@@ -77,7 +78,18 @@ def creatUSSMNoPrev(hasChildNode, classificationName, id, SSMModel):
 
 
 def returnChild(prev, childrenNodes, SSMModel):
+    #TODO: Handle deletes and moves
+
     if 'child' in childrenNodes:
+        # There is a child so test if the previous Node is set to True, if not set to True if fals
+        if 'ext_model_id' in childrenNodes and childrenNodes['ext_model_id'] == prev.ext_model_id and not childrenNodes[
+            'hasChildNode'] == prev.hasChildNode:
+            prev.hasChildNode = childrenNodes['hasChildNode']
+            prev.save()
+            # Set it to true
+            # If there is a remove then we need to test what that looks like and where that goes
+        else:
+            childrenNodes['hasChildNode'] = prev.hasChildNode
 
         for node in childrenNodes[
             'child']:  # if there are multiple children(LIST) then it will enumerate through each one
@@ -92,7 +104,7 @@ def returnChild(prev, childrenNodes, SSMModel):
                 prev.add_child(
                     instance=newUSSM)  # Prev is usually the RootNode. If the first child node doesn't exist, then Prev is the root node. We add it to the prev
 
-            childNode = returnChild(newUSSM, node, SSMModel)
+            returnChild(newUSSM, node, SSMModel)
             # else: #this node doesn't have any children so  check to see if it is already there. If not, add it, if so, move on
             #     if not 'ext_model_id' in node:
             #            #the first object in the dictionary is new. so we have to make an object

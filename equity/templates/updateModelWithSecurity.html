@@ -125,9 +125,9 @@
             hasChildren: "true"
         }];
 
+        var ext_model_id="";
 
         $(document).ready(function () {
-
 
             //TODO:Need to erase nodes from TV2
 
@@ -202,7 +202,7 @@
                     read: {
                         url: "../../getSavedClassificationModel/{{ id }}",
                         contentType: "application/json",
-                        datatype: "json",
+                        datatype: "json"
                     },
                     update: {
                         url: "{% url 'updateModelNodes' %}",
@@ -215,6 +215,7 @@
                     model: {
                         id: "ext_model_id",
                         hasChildren: "hasChildNode"
+
                     },
                     parse: function (response) {
                         NodeArray = [];
@@ -289,6 +290,12 @@
                         }
                     }
                 },
+                change: function (e){
+                    ext_model_id = e.node;
+
+
+                },
+
                 dragend: function (e) {
                     console.log("Drag end", e.sourceNode, e.dropPosition, e.destinationNode);
                 },
