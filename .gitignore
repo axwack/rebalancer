@@ -2,6 +2,9 @@ db.dump
 .DS_Store
 rebalancer.sql
 
+equity/migrations/*
+
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
@@ -53,6 +56,8 @@ nosetests.xml
 coverage.xml
 *,cover
 .hypothesis/
+
+
 
 # Translations
 *.mo
