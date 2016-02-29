@@ -9,11 +9,11 @@ class Migration(migrations.Migration):
         ('equity', '0044_remove_classificationnames_classificationname'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='classificationnames',
-            name='classificationName',
-            field=models.CharField(default='Classification', max_length=100),
-            preserve_default=False,
-        ),
+    # operations = [
+    #    migrations.AddField(
+    #        model_name='classificationnames',
+    #        name='classificationName',
+    #        field=models.CharField(default='Classification', max_length=100),
+    #        preserve_default=False,
+    #    ),
     ]
