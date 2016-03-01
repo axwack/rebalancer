@@ -155,3 +155,11 @@ STATICFILES_DIRS = (
 )
 
 CLASSIFICATION_ROOT = 'Classification'
+
+# eMail Settings
+DEFAULT_FROM_EMAIL = 'admin <admin@restorefellowship.org>'
+EMAIL_HOST = 'smtp.1and.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info@restorefellowship.org'
+EMAIL_HOST_PASSWORD = 'Rest0r32016'
