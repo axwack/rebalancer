@@ -1,8 +1,8 @@
 db.dump
-.DS_Store
+*.DS_Store
 rebalancer.sql
 
-equity/migrations/*
+equity/migrations
 
 
 # Elastic Beanstalk Files

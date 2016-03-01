@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import dj_database_url
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))  # added Heroku
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
@@ -162,9 +163,9 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 CLASSIFICATION_ROOT = 'Classification'
 
 # eMail Settings
-DEFAULT_FROM_EMAIL = 'info <admin@restorefellowship.org>'
+DEFAULT_FROM_EMAIL = 'Christopher Lee <admin@principalmvl.com>'
 EMAIL_HOST = 'smtp.1and1.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'info@restorefellowship.org'
-EMAIL_HOST_PASSWORD = 'Rest0r32016'
+EMAIL_HOST_USER = 'admin@principalmvl.com'
+EMAIL_HOST_PASSWORD = 'Qeuyr0o1#1'

@@ -11,7 +11,9 @@
     <!-- Le styles -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    {% block css %}{% endblock %}
+    <link href="{% static "bootstrap/css/sticky-footer-navbar.css" %}" rel="stylesheet">
+    {% block css %}
+    {% endblock %}
 
     <style>
         body {
@@ -34,9 +36,10 @@
     <link rel="apple-touch-icon-precomposed" href="..{{ STATIC_URL }}bootstrapico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="..{{ STATIC_URL }}bootstrapico/favicon.png">
 </head>
+
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -85,7 +88,8 @@
             {% endif %}
         </div><!--/.nav-collapse -->
     </div>
-</div>
+</nav>
+
 <div class="container">
 
     <!-- Put your Block information here -->
@@ -94,6 +98,22 @@
     {% block primary %}{% endblock %}
     {% block content %} {% endblock %}
 </div> <!-- /container -->
+
+<footer class="footer">
+    <div class="container">
+        {% if not request.user.username %}
+            <p class="text-muted">Today is {% now "jS F Y H:i" %}</p>
+        {% else %}
+            <p class="text-muted">Hello, {{ request.user.username }} | Today is {% now "jS F Y H:i" %}</p>
+        {% endif %}
+
+        {% block footer %}
+
+        {% endblock %}
+
+    </div>
+</footer>
+
 
 <!-- Le javascript================================================== -->
 
