@@ -104,7 +104,7 @@
         {% if not request.user.username %}
             <p class="text-muted">Today is {% now "jS F Y H:i" %}</p>
         {% else %}
-            <p class="text-muted">Hello, {{ request.user.username }} | Today is {% now "jS F Y H:i" %}</p>
+            <p class="text-muted">Hello, <strong>{{ request.user.username }}</strong> | Today is {% now "jS F Y H:i" %}</p>
         {% endif %}
 
         {% block footer %}
