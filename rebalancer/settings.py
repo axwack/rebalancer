@@ -164,8 +164,8 @@ CLASSIFICATION_ROOT = 'Classification'
 
 # eMail Settings
 DEFAULT_FROM_EMAIL = 'Christopher Lee <admin@principalmvl.com>'
-EMAIL_HOST = 'smtp.1and1.com'
+EMAIL_HOST = '#.1and1.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'admin@principalmvl.com'
-EMAIL_HOST_PASSWORD = 'Qeuyr0o1#1'
+EMAIL_HOST_PASSWORD = '#'
