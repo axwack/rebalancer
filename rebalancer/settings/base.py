@@ -103,5 +103,8 @@ STATIC_URL = '/static/'
 # )
 
 
+DATABASES = {
+    'default': {}
+}
 
 CLASSIFICATION_ROOT = 'Classification'
