@@ -2,7 +2,9 @@
 {% load i18n %}
 
 {% block content %}
-    <p>{% trans "Account activation failed." %}</p>
+    <div class="alert alert-danger" role="alert">
+        <p>{% trans "'Ouch!!! Account activation failed." %}</p>
+    </div>
 {% endblock %}
 
 

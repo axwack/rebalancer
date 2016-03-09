@@ -104,12 +104,6 @@ def returnChild(prev, childrenNodes, SSMModel):
                 prev.add_child(
                     instance=newUSSM)  # Prev is usually the RootNode. If the first child node doesn't exist, then Prev is the root node. We add it to the prev
 
-            returnChild(newUSSM, node, SSMModel)
-            # else: #this node doesn't have any children so  check to see if it is already there. If not, add it, if so, move on
-            #     if not 'ext_model_id' in node:
-            #            #the first object in the dictionary is new. so we have to make an object
-            #            newUSSM = creatUSSMNoPrev(node['hasChildNode'], node['classificationName'], node['id'], SSMModel) #Create a new SSM. This is the first node
+                returnChild(newUSSM, node, SSMModel)
 
-            #            prev.add_child(instance=newUSSM) #Prev is usually the RootNode. If the first child node doesn't exist, then Prev is the root node. We add it to the prev
-            #            print "In returnChild: Previous Node is  " + str(prev.classificationName)
-            #            print "In returnChild: New Node is " + str(newUSSM.classificationName)
+            returnChild(prev, node, SSMModel)
