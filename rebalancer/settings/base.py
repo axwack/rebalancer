@@ -98,7 +98,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static", "staticfiles")
 STATIC_ROOT = os.path.join(BASE_DIR, "equity/static")
-STATIC_URL = '/static/'
+STATIC_URL = 'equity/static/'
 
 # Extra places for collectstatic to find static files. Added Heroku
 # STATICFILES_DIRS = (
