@@ -23,9 +23,9 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'equity/static')
 STATIC_URL = 'equity/static/'
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'equity/static'),
-)
+# STATICFILES_DIRS = (
+#    os.path.join(PROJECT_ROOT, 'equity/static'),
+# )
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
