@@ -4,7 +4,7 @@ import os
 print __file__
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))  # added Heroku
+print "BASE_DIR %s" % (BASE_DIR)
 
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
 
