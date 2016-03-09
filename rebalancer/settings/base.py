@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
 
 print "Templates in [PROJECT PATH]: %s" % (PROJECT_PATH)
-print "Templates in Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
+
 print "Templates in [BASE DIR]: %s" % (BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
