@@ -17,7 +17,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'admin@principalmvl.com'
 EMAIL_HOST_PASSWORD = '#'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'equity/static')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
