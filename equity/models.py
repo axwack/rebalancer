@@ -79,7 +79,7 @@ class ClassificationManager(models.Manager):
 class ClassificationNames(AL_Node):
     objects = ClassificationManager()
     classificationLevel = models.IntegerField(null=True)
-    classificationName = models.CharField(max_length=100)
+    classificationName = models.CharField(max_length=100, null=True)
     parent = models.ForeignKey('self', null=True, related_name='children_set', db_index=True)
     node_order_by = ['classificationName', 'desc', 'source']
     hasChildNode = models.NullBooleanField(default=False)
@@ -91,9 +91,35 @@ class ClassificationNames(AL_Node):
         return self.classificationName
 
 
+class Countries(models.Model):
+    cntry_cd = models.CharField(max_length=100, null=True)
+    cntry_name = models.CharField(max_length=1000)
+    iso_cntry_cd = models.CharField(max_length=50)
+
+
+class Currencies(models.Model):
+    currencyCd = models.CharField(max_length=100, null=True)
+    currencyName = models.CharField(max_length=100, null=True)
+    calc_precision = models.FloatField(null=True)
+
+
 class AllocationModelManager(models.Manager):
     def get_by_natural_key(self, modelName):
         return self.get(modelName=modelName)
+
+
+class Exchanges(models.Model):
+    exch_cd = models.CharField(max_length=200, unique=True)
+    exchange = models.CharField(max_length=1000)
+    cntry_cd = models.ForeignKey(Countries)
+    exch_or_otc = models.CharField(max_length=5)
+    iso_exch_cd = models.CharField(max_length=10)
+    tz_region = models.CharField(max_length=10)
+    open_time = models.TimeField(null=True)
+    mid_open_time = models.TimeField(null=True)
+    mid_close_time = models.TimeField(null=True)
+    cutoff_time = models.TimeField(null=True)
+    close_time = models.TimeField(null=True)
 
 
 class AllocationModels(models.Model):
@@ -134,16 +160,111 @@ class Identity(models.Model):
 
 
 class Security(models.Model):
+
     secId = models.IntegerField(primary_key=True)
+    extSecId = models.CharField(max_length=100, null=True)
     secName = models.CharField(max_length=100, blank=False)
+    shortName = models.CharField(max_length=100, null=True)
     secType = models.ForeignKey(SecurityType)
-    identity = models.ForeignKey(Identity)
-    listExchCd = models.CharField(max_length=10)
+    issueState = models.CharField(max_length=100, null=True)
+    issueCountry = models.ForeignKey(Countries)
+    issueDate = models.DateField
+    locCurrencyCd = models.CharField(max_length=20)
+    crossCurrencyCd = models.CharField(max_length=20)
+    listExchCd = models.CharField(max_length=20)
     baseCurrency = models.CharField(max_length=5, default='USD')
     mktPrice = models.FloatField()
     amtIssued = models.FloatField()
     amtOutstanding = models.FloatField()
     couponRate = models.FloatField()
+    ticker = models.CharField(max_length=100, null=True)
+    isin = models.CharField(max_length=100, null=True)
+    sedol = models.CharField(max_length=100, null=True)
+    cusip = models.CharField(max_length=100, null=True)
+    RIC = models.CharField
+    valoran = models.CharField(max_length=100, null=True)
+    avgLife = models.DateField
+    matureDate = models.DateField
+    callDate = models.DateField
+    putDate = models.DateField
+    nextCouponDate = models.DateField
+    strikePrice = models.FloatField()
+    duration = models.FloatField
+    expireDate = models.DateField
+    fedTaxable = models.DateField
+    privPlacement = models.BooleanField
+    Yield = models.FloatField
+    spread = models.FloatField
+    wghtedAvg = models.FloatField
+    preferredRate = models.FloatField
+    firstExerciseDate = models.DateField
+    lastModifyBy = models.ForeignKey(User)
+    createDate = models.DateTimeField(auto_created=True)
+    lastModifyDate = models.DateTimeField(auto_now_add=True)
+    cnvrtRatio = models.FloatField
+    comments = models.CharField(max_length=100, null=True)
+    benchmarkSecurity = models.CharField(max_length=100, null=True)
+    dayBasis = models.CharField
+    putNoticeMonth = models.IntegerField
+    putFrequency = models.FloatField
+    couponPaymentDay = models.CharField
+    couponPaymentAmt = models.FloatField
+    firstPaymentDate = models.DateField
+    lastPaymentDate = models.DateField
+    prevPaymentDate = models.DateField
+    paymentFrequency = models.CharField
+    optionAdjSpread = models.FloatField
+    modifiedDuration = models.FloatField
+    accrualType = models.CharField
+    defaultDate = models.DateField
+    outOfDefaultDate = models.DateField
+    convexity = models.FloatField
+    interestType = models.CharField
+    yieldToMature = models.FloatField
+    yieldToWorstCall = models.FloatField
+    yieldToWorstPut = models.FloatField
+    WAC = models.FloatField
+    WAM = models.FloatField
+    prePayRate = models.FloatField
+    delayDays = models.FloatField
+    factor = models.FloatField
+    factorDate = models.DateField
+    mortgageYield = models.FloatField
+    avgLifeDate = models.DateField
+    poolNumber = models.CharField
+    prepayFloor = models.FloatField
+    prepayCap = models.CharField
+    prepayCollar = models.FloatField
+    prepayCollarUpper = models.FloatField
+    prepayCollarLower = models.FloatField
+    nextResetDate = models.FloatField
+    nextSinkDate = models.DateField
+    sinkPercent = models.FloatField
+    convertPrice = models.FloatField
+    convertStartDate = models.DateField
+    convertEndDate = models.DateField
+    resetDay = models.DateField
+    eps = models.FloatField
+    beta = models.FloatField
+    peRatio = models.FloatField
+    annualDividend = models.FloatField
+    divCurrency = models.CharField(max_length=100, null=True)
+    contractSize = models.FloatField
+    lotSize = models.FloatField
+    isERISA = models.BooleanField
+    exDivDate = models.DateField
+    marketCap = models.FloatField
+    effectiveDuration = models.FloatField
+    effectiveDate = models.DateField
+    effectiveYield = models.FloatField
+    effectiveModDuration = models.FloatField
+    effectiveConvexity = models.FloatField
+    interestPercent = models.FloatField
+    countryOfRisk = models.CharField(max_length=100, null=True)
+    recordVersion = models.IntegerField()
+
+    def __unicode__(self):
+        return self.secName
 
 
 class SecurityClassification(models.Model):
@@ -152,7 +273,7 @@ class SecurityClassification(models.Model):
 
 
 class TaxLot(models.Model):
-    extTaxLotId = models.CharField(max_length=100)
+    extTaxLotId = models.CharField(max_length=100, null=True)
     secId = models.ForeignKey(Security)
     acctCd = models.ForeignKey(Account)
     longOrShort = (('L', 'Long'), ('S', 'Short'))
@@ -188,7 +309,7 @@ class RebalanceParameters(models.Model):
     reviewCurrentSale = models.BooleanField(default=False)
     adjustCashAfterRebal = models.BooleanField(default=False)
     adjustWgtAfterRebal = models.BooleanField(default=False)
-    taxLots = models.CharField(max_length=100)
+    taxLots = models.CharField(max_length=100, null=True)
 
 
 class AccountParameters(models.Model):

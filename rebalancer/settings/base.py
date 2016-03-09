@@ -3,7 +3,7 @@ import os
 import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))  # added Heroku
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__name__))  # added Heroku
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
 
 print "Templates in [PROJECT PATH]: %s" % (PROJECT_PATH)

@@ -2,10 +2,12 @@ __author__ = 'vincentlee'
 
 from crispy_forms.helper import FormHelper
 from django import forms
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout
+from crispy_forms.bootstrap import Tab, TabHolder
 from equity.models import RebalanceParameters, AccountFilters, ClassificationNames, AccountParameters, \
     SecuritySelectionModels
 from django.utils.translation import ugettext_lazy as _
+from equity.models import Security
 
 
 class ModelNameForm(forms.Form):
@@ -156,3 +158,45 @@ class SecuritySelectionModelForm(forms.ModelForm):
 
         # Always return the full collection of cleaned data.
         return cleaned_data
+
+class AccountsForm(forms.ModelForm):
+    pass
+
+class SecuritiesForm(forms.ModelForm):
+
+
+    def __init__(self, *args, **kwargs):
+        super(SecuritiesForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab(
+                    'Common Stock',
+                    'secName',
+                    'secType',
+                    'identity',
+
+                ),
+                Tab(
+                    'Fixed Income',
+                    'identity',
+                ),
+                Tab(
+                    'Derivative',
+                    'ListExchCd',
+                )
+            )
+        )
+
+    class Meta:
+        model = Security # Your User model
+        exclude = ('secId',)
+
+class NoFormTagCrispyFormMixin(object):
+    @property
+    def helper(self):
+        if not hasattr(self, '_helper'):
+            self._helper = FormHelper()
+            self._helper.form_tag = False
+        return self._helper
