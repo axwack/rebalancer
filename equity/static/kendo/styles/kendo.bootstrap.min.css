@@ -1,5 +1,5 @@
 /** 
- * Kendo UI v2016.1.112 (http://www.telerik.com/kendo-ui)                                                                                                                                               
+ * Kendo UI v2016.1.226 (http://www.telerik.com/kendo-ui)                                                                                                                                               
  * Copyright 2016 Telerik AD. All rights reserved.                                                                                                                                                      
  *                                                                                                                                                                                                      
  * Kendo UI commercial licenses may be obtained at                                                                                                                                                      
@@ -1150,12 +1150,6 @@
     div.km-pane-wrapper a {
         color: #333
     }
-
-    .km-pane-wrapper .k-icon {
-        background-image: url(Bootstrap/sprite_2x.png);
-        -webkit-background-size: 21.2em 21em;
-        background-size: 21.2em 21em
-    }
 }
 
 .km-pane-wrapper .k-mobile-list .k-edit-field, .km-pane-wrapper .k-mobile-list .k-item, .km-pane-wrapper .k-mobile-list .k-recur-view > .k-edit-field .k-check {
@@ -1354,16 +1348,20 @@
     background-color: #ebebeb
 }
 
+.k-pivot-rowheaders .k-grid tr:hover {
+    background: 0 0
+}
+
 .k-grid td.k-state-focused {
     -webkit-box-shadow: inset 0 0 0 1px inset 0 0 7px 0 #76abd9;
     box-shadow: inset 0 0 0 1px inset 0 0 7px 0 #76abd9
 }
 
-.k-grid tr.k-state-focused:hover td, .k-grid tr:hover .k-state-focused {
+.k-grid tr.k-state-focused:hover td {
     background-color: #d5e5f3
 }
 
-.k-grid tr.k-state-selected:hover td, .k-grid tr:hover .k-state-selected {
+.k-grid td.k-state-selected:hover, .k-grid tr.k-state-selected:hover td {
     background-color: #3379b5
 }
 
@@ -2619,5 +2617,4 @@
 .k-spreadsheet .k-widget[data-property=fontFamily] {
     width: 130px
 }
-
 /*# sourceMappingURL=kendo.bootstrap.min.css.map */

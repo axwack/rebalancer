@@ -1,5 +1,5 @@
 /** 
- * Kendo UI v2016.1.112 (http://www.telerik.com/kendo-ui)                                                                                                                                               
+ * Kendo UI v2016.1.226 (http://www.telerik.com/kendo-ui)                                                                                                                                               
  * Copyright 2016 Telerik AD. All rights reserved.                                                                                                                                                      
  *                                                                                                                                                                                                      
  * Kendo UI commercial licenses may be obtained at                                                                                                                                                      
@@ -1133,6 +1133,11 @@ a.k-button:hover {
     opacity: 0;
     width: 0;
     margin: 0;
+    -webkit-appearance: none;
+    overflow: hidden
+}
+
+.k-ff .k-radio, .k-ff input.k-checkbox {
     position: absolute
 }
 
@@ -2421,7 +2426,8 @@ body .k-datetimepicker .k-select {
 }
 
 .k-list-filter {
-    position: relative
+    position: relative;
+    margin-bottom: 2px
 }
 
 .k-list-filter > .k-textbox {
@@ -4468,8 +4474,7 @@ span.k-tooltip {
 }
 
 .k-calendar {
-    width: 18.29em;
-    padding: 0 5px
+    width: 19em
 }
 
 .k-calendar .k-header {
@@ -5053,5 +5058,4 @@ div.k-window-content {
 .km-pane-wrapper .k-mobile-list .k-edit-field.k-scheduler-toolbar .k-scheduler-navigation {
     margin-bottom: -.6em
 }
-
 /*# sourceMappingURL=kendo.common-material.core.min.css.map */

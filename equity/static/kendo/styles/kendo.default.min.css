@@ -1,5 +1,5 @@
 /** 
- * Kendo UI v2016.1.112 (http://www.telerik.com/kendo-ui)                                                                                                                                               
+ * Kendo UI v2016.1.226 (http://www.telerik.com/kendo-ui)                                                                                                                                               
  * Copyright 2016 Telerik AD. All rights reserved.                                                                                                                                                      
  *                                                                                                                                                                                                      
  * Kendo UI commercial licenses may be obtained at                                                                                                                                                      
@@ -475,15 +475,27 @@
 }
 
 .k-calendar .k-today {
-    background-color: #f35800
+    -webkit-box-shadow: inset 0 0 0 1px #f35800;
+    box-shadow: inset 0 0 0 1px #f35800
 }
 
 .k-calendar .k-today .k-link {
-    color: #fff
+    color: #f35800;
+    font-weight: 700
 }
 
-.k-calendar .k-today.k-state-hover {
-    background-color: #f35800
+.k-calendar td.k-today.k-state-focused, .k-calendar td.k-today.k-state-focused.k-state-hover {
+    -webkit-box-shadow: inset 0 0 3px 1px #aeaeae;
+    box-shadow: inset 0 0 3px 1px #aeaeae
+}
+
+.k-calendar td.k-today.k-state-hover, .k-calendar td.k-today.k-state-selected {
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.k-calendar td.k-today.k-state-hover .k-link {
+    color: #2e2e2e
 }
 
 .k-calendar .k-footer .k-link {
@@ -499,7 +511,7 @@
     background-image: none
 }
 
-.k-calendar td.k-state-selected .k-link {
+.k-calendar td.k-state-selected .k-link, .k-calendar td.k-today.k-state-selected.k-state-hover .k-link {
     color: #fff
 }
 
@@ -852,8 +864,8 @@
     background-color: #b9b3b3
 }
 
-.k-grid td.k-state-selected.k-state-focused {
-    background-color: #ff5e03
+.k-pivot-rowheaders .k-grid tr:hover {
+    background: 0 0
 }
 
 .k-grid td.k-state-selected:hover, .k-grid tr.k-state-selected:hover {
@@ -1203,12 +1215,6 @@
 @media screen and (-ms-high-contrast: active) and (-ms-high-contrast: none) {
     div.km-pane-wrapper a {
         color: #2e2e2e
-    }
-
-    .km-pane-wrapper .k-icon {
-        background-image: url(Default/sprite_2x.png);
-        -webkit-background-size: 21.2em 21em;
-        background-size: 21.2em 21em
     }
 }
 
@@ -2139,5 +2145,4 @@
 .k-spreadsheet-toolbar .k-combobox .k-state-active .k-input, .k-spreadsheet-toolbar .k-combobox .k-state-focused .k-input, .k-spreadsheet-toolbar .k-combobox .k-state-hover .k-input {
     color: #2e2e2e
 }
-
 /*# sourceMappingURL=kendo.default.min.css.map */
