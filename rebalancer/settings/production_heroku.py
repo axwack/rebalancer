@@ -4,6 +4,12 @@ import dj_database_url
 # Added for Heroku
 PROJECT_ROOT = os.path.dirname(BASE_DIR)  # added Heroku
 print "Templates in Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles/')
+STATIC_URL = 'equity/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static/'),
+)
 
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
@@ -19,9 +25,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'admin@principalmvl.com'
 EMAIL_HOST_PASSWORD = '#'
-
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'equity/static')
-STATIC_URL = 'equity/static/'
 
 # Extra places for collectstatic to find static files.
 # STATICFILES_DIRS = (
