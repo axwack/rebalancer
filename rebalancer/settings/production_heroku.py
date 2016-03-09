@@ -7,7 +7,7 @@ print "Templates in Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = []
 
@@ -19,7 +19,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'admin@principalmvl.com'
 EMAIL_HOST_PASSWORD = '#'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'equity/static/')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'equity/static')
 STATIC_URL = 'equity/static/'
 
 # Extra places for collectstatic to find static files.
