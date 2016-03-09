@@ -10,7 +10,7 @@ STATIC_URL = 'equity/static/'
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static/'),
+    os.path.join(PROJECT_ROOT, 'equity/static/'),
 )
 
 print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
