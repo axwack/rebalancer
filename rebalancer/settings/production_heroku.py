@@ -1,4 +1,4 @@
-import base
+from .base import *
 import dj_database_url
 
 # Added for Heroku
