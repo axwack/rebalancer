@@ -1,6 +1,7 @@
 from .base import *
 import dj_database_url
 # Added for Heroku
+PROJECT_ROOT = os.path.dirname(BASE_DIR)  # added Heroku
 
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
