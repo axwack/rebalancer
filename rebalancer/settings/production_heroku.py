@@ -9,7 +9,7 @@ DATABASES['default'].update(db_from_env)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.portfolio270.xyz', '*.herokuapp.com']
 
 # eMail Settings
 DEFAULT_FROM_EMAIL = 'Christopher Lee <admin@principalmvl.com>'
