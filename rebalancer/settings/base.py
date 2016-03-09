@@ -17,6 +17,7 @@ print "Templates in [BASE DIR]: %s" % (BASE_DIR)
 SECRET_KEY = ')jlb!a3nqv!=j5dp#m1hplc$@%sxf#ut^p%d+@f1^f3=(ap&j6'
 
 # Application definition
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
 
