@@ -2,9 +2,9 @@ from .base import *
 import dj_database_url
 
 # Added for Heroku
-PROJECT_ROOT = os.path.dirname(__file__)  # added Heroku
-print "Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles/')
+# PROJECT_ROOT = os.path.dirname(__file__)  # added Heroku
+# print "Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
+STATIC_ROOT = 'staticfiles/'
 STATIC_URL = 'equity/static/'
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
