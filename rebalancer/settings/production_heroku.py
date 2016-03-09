@@ -3,14 +3,17 @@ import dj_database_url
 
 # Added for Heroku
 PROJECT_ROOT = os.path.dirname(BASE_DIR)  # added Heroku
-print "Templates in Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
+print "Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles/')
 STATIC_URL = 'equity/static/'
+
+print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static/'),
 )
 
+print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
