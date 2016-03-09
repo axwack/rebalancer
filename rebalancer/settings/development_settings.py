@@ -1,17 +1,9 @@
-from .base import *
+from base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static", "staticfiles")
-STATIC_ROOT = os.path.join(BASE_DIR, "equity/static")
-STATIC_URL = '/static/'
-
-
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
