@@ -1,10 +1,8 @@
 from .base import *
 import dj_database_url
 
-# added from the docs:
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-STATIC_ROOT = 'staticfiles'
+# STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
@@ -13,8 +11,8 @@ STATICFILES_DIRS = (
 )
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
-
 print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
+
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
 
