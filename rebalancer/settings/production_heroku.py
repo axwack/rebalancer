@@ -9,7 +9,7 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'equity/static'),
+    os.path.join(BASE_DIR, 'equity/static'),
 )
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
