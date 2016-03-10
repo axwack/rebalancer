@@ -2,8 +2,8 @@ from .base import *
 import dj_database_url
 
 print "USING PRODUCTION SETTINGS..."
-# STATIC_ROOT = 'staticfiles'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = ''
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
 
