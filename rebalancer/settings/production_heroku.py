@@ -4,13 +4,13 @@ import dj_database_url
 # Added for Heroku
 # PROJECT_ROOT = os.path.dirname(__file__)  # added Heroku
 # print "Heroku [PROJECT ROOT]: %s" % (PROJECT_ROOT)
-STATIC_ROOT = os.path.join(BASE_DIR, "equity/staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "rebalancer/equity/staticfiles")
 STATIC_URL = '/static/'
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'equity/static/'),
+    os.path.join(BASE_DIR, 'rebalancer/equity/static/'),
 )
 
 print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
