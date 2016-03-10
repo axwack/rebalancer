@@ -1,5 +1,7 @@
 from .base import *
 
+print "USING DEVELOPMENT SETTINGS....."
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

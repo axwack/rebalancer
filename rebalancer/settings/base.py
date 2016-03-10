@@ -80,6 +80,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+DATABASES = {
+    'default': {}
+}
+
 WSGI_APPLICATION = 'rebalancer.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = "bootstrap3"
