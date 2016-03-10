@@ -17,7 +17,7 @@ def get_env_variable(var_name):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print "BASE_DIR %s" % (BASE_DIR)
 
-PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
+PROJECT_PATH = os.path.join(BASE_DIR, 'equity')
 
 print "BASE [PROJECT PATH]: %s" % (PROJECT_PATH)
 print "BASE [BASE DIR]: %s" % (BASE_DIR)
