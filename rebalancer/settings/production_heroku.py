@@ -6,7 +6,6 @@ print "USING PRODUCTION SETTINGS..."
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'staticfiles')
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
-print "Installed Apps: %s " % (INSTALLED_APPS)
 
 STATIC_URL = '/static/'
 
