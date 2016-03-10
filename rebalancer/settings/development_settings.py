@@ -5,7 +5,9 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['localhost:8000']
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+print 'STATIC_ROOT(DEV): %s' % STATIC_ROOT
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {

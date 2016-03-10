@@ -8,7 +8,6 @@ print "BASE_DIR %s" % (BASE_DIR)
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
 
 print "Templates in [PROJECT PATH]: %s" % (PROJECT_PATH)
-
 print "Templates in [BASE DIR]: %s" % (BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
@@ -99,7 +98,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files. Added Heroku
 # STATICFILES_DIRS = (
