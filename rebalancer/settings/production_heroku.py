@@ -6,6 +6,7 @@ print "USING PRODUCTION SETTINGS..."
 STATIC_ROOT = os.path.join(PROJECT_PATH, 'staticfiles')
 
 print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
+print "Installed Apps: %s " % (INSTALLED_APPS)
 
 STATIC_URL = '/static/'
 
@@ -39,5 +40,3 @@ EMAIL_HOST_PASSWORD = '#'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-print "Installed Apps: %s " % (INSTALLED_APPS)
