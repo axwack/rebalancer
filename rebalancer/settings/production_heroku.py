@@ -10,7 +10,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
 )
 
-print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
 print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
 
 db_from_env = dj_database_url.config()

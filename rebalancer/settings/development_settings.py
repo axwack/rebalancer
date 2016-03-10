@@ -5,7 +5,7 @@ print "USING DEVELOPMENT SETTINGS....."
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost:8000']
+ALLOWED_HOSTS = []
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

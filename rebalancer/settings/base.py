@@ -1,6 +1,18 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+print "USING BASE SETTINGS...."
+
+from django.core.exceptions import ImproperlyConfigured
+
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print "BASE_DIR %s" % (BASE_DIR)
@@ -110,9 +122,5 @@ STATIC_URL = '/static/'
 #    os.path.join(BASE_DIR, 'equity/static'),
 # )
 
-
-DATABASES = {
-    'default': {}
-}
 
 CLASSIFICATION_ROOT = 'Classification'
