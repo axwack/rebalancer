@@ -1,9 +1,11 @@
-from base import *
+from .base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost:8000']
+
+STATIC_URL = '/static/'
 
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {

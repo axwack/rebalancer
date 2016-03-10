@@ -1,7 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-print __file__
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print "BASE_DIR %s" % (BASE_DIR)
@@ -18,8 +17,6 @@ print "Templates in [BASE DIR]: %s" % (BASE_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ')jlb!a3nqv!=j5dp#m1hplc$@%sxf#ut^p%d+@f1^f3=(ap&j6'
 
-# Application definition
-ALLOWED_HOSTS = []
 
 INSTALLED_APPS = (
 
@@ -50,8 +47,7 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = "/index"
 
 MIDDLEWARE_CLASSES = (
-    # 'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +55,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware'
 )
 
 ROOT_URLCONF = 'rebalancer.urls'
