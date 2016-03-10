@@ -1,8 +1,12 @@
 from .base import *
 import dj_database_url
 
-# STATIC_ROOT = 'staticfiles'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+print "USING PRODUCTION SETTINGS..."
+STATIC_ROOT = 'staticfiles'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+print "Heroku [STATIC_ROOT]: %s" % (STATIC_ROOT)
+
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
