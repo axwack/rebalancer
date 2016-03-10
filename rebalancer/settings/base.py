@@ -19,8 +19,8 @@ print "BASE_DIR %s" % (BASE_DIR)
 
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity/templates')
 
-print "Templates in [PROJECT PATH]: %s" % (PROJECT_PATH)
-print "Templates in [BASE DIR]: %s" % (BASE_DIR)
+print "BASE [PROJECT PATH]: %s" % (PROJECT_PATH)
+print "BASE [BASE DIR]: %s" % (BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
