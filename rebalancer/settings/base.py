@@ -31,15 +31,15 @@ SECRET_KEY = ')jlb!a3nqv!=j5dp#m1hplc$@%sxf#ut^p%d+@f1^f3=(ap&j6'
 
 
 INSTALLED_APPS = (
-
+    'registration',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
     'django.contrib.admin',
+
     # Third Party
     'crispy_forms',
     'rest_framework',
