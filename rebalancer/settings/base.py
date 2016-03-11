@@ -125,3 +125,4 @@ STATIC_URL = '/static/'
 
 
 CLASSIFICATION_ROOT = 'Classification'
+

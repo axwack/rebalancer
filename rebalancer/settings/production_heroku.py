@@ -1,5 +1,9 @@
 from .base import *
-import dj_database_url
+import dj_database_url, os
+
+DEBUG = False
+TEMPLATE_DEBUG = False
+
 
 print "USING PRODUCTION SETTINGS..."
 # STATIC_ROOT = ''
@@ -39,3 +43,19 @@ EMAIL_HOST_PASSWORD = '9aeb6e3e-b988-4f35-8ffc-2442270d913d'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+    },
+}
