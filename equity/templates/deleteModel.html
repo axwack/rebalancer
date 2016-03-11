@@ -5,7 +5,7 @@
 {% block title %} Select Securities Selection{% endblock %}
 
 {% block nav_active_list %}
-    % block nav_active_list %}
+    <ul class="nav navbar-nav">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -28,17 +28,7 @@
             <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
         </ul>
     </li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false">
-            Reference Data<span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="">Positions</a></li>
-            <li><a href="#">Tax Lots</a></li>
-            <li><a href="#">Accounts</a></li>
-        </ul>
-    </li>
+        <li><a href="{% url 'referenceData' %}">Reference Data</a></li>
     <li><a href="{% url 'securities' %}">Securities</a></li>
     <li class="dropdown active">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -48,10 +38,11 @@
         <ul class="dropdown-menu">
             <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
             <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
-            <li><a href="#">Delete Model</a></li>
+            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+    </ul>
 {% endblock %}
 
 {% block primary %}
@@ -90,6 +81,13 @@
         </div>
     </div>
 
+    <script id="emailTemplate" type="text/x-kendo-template">
+        <div class="new-mail">
+            <img src="{% static 'images/success-icon.png' %}"/>
+            <h3>#= title #</h3>
+            <p>#= message #</p>
+        </div>
+    </script>
 {% endblock %}
 
 {% block script %}
@@ -98,14 +96,6 @@
 
 
     <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
-
-    <script id="successTemplate" type="text/x-kendo-template">
-        <div class="delete-success">
-            <img src="{% static "images/success-icon.png" %}"/>
-            <h3>#= message #</h3>
-        </div>
-    </script>
-
 
     <script type="text/javascript">
 
@@ -117,11 +107,11 @@
                     top: 30,
                     right: 30
                 },
-                autoHideAfter: 0,
+                autoHideAfter: 500,
                 stacking: "down",
                 templates: [{
-                    type: "delete-success",
-                    template: $("#successTemplate").html()
+                    type: "info",
+                    template: $("#emailTemplate").html()
                 }]
             }).data("kendoNotification");
 
@@ -158,9 +148,10 @@
                     success: function (response) {
 
                         notification.show({
-                            message: "Delete Successful."
-                        }, "delete-success");
-                        //window.location.href = "../deleteSecuritySelectionModels/";
+                            title: "Model Deleted.",
+                            message: "Model: "
+                        }, "info");
+                        window.location.href = "../deleteSecuritySelectionModels/";
                     }
                 });
 
@@ -177,31 +168,25 @@
     </script>
     <style>
 
-        /* Success template */
-        .k-notification-delete-success.k-group {
-            background: rgba(0%, 60%, 0%, .7);
+        /* Info template */
+        .k-notification-info .k-group {
+            background: rgba(0%, 0%, 0%, .7);
             color: #fff;
         }
 
-        .delete-success {
-            width: 240px;
+        .new-mail {
+            width: 300px;
             height: 100px;
-            padding: 0 30px;
-            line-height: 100px;
         }
 
-        .delete-success h3 {
-            font-size: 1.7em;
-            font-weight: normal;
-            display: inline-block;
-            vertical-align: middle;
+        .new-mail h3 {
+            font-size: 1em;
+            padding: 32px 10px 5px;
         }
 
-        .delete-success img {
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 10px;
+        .new-mail img {
+            float: left;
+            margin: 30px 15px 30px 30px;
         }
-
     </style>
 {% endblock %}

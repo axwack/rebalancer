@@ -24,12 +24,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['www.portfolio270.xyz', '*.herokuapp.com']
 
 # eMail Settings
-DEFAULT_FROM_EMAIL = 'Christopher Lee <admin@principalmvl.com>'
-EMAIL_HOST = '#.1and1.com'
-EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'Christopher Lee <vincent.lee@portfolio270.xyz>'
+EMAIL_HOST = 'smtp.postmarkapp.com'
+EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'admin@principalmvl.com'
-EMAIL_HOST_PASSWORD = '#'
+EMAIL_HOST_USER = '9aeb6e3e-b988-4f35-8ffc-2442270d913d'
+EMAIL_HOST_PASSWORD = '9aeb6e3e-b988-4f35-8ffc-2442270d913d'
 
 # Extra places for collectstatic to find static files.
 # STATICFILES_DIRS = (

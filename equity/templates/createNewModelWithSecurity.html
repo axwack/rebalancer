@@ -47,7 +47,7 @@
         <ul class="dropdown-menu">
             <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
             <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
-            <li><a href="#">Delete Model</a></li>
+            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
@@ -267,7 +267,7 @@ $(document).ready(function () {
                 ssmModel: $("#securitySelectionPK").val()
             },
             success: function (response) {
-                window.location.href = "../createModelWeights?id=" + response + "&SSMModel=" + {{ securitySelectionModelName }};
+                window.location.href = "../createModelWeights?id=" + response + "&SSMModel=' {{ securitySelectionModelName }}'";
             }
         });
     });
