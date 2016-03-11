@@ -19,6 +19,7 @@ print "BASE_DIR %s" % (BASE_DIR)
 
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity')
 
+
 print "BASE [PROJECT PATH]: %s" % (PROJECT_PATH)
 print "BASE [BASE DIR]: %s" % (BASE_DIR)
 
@@ -74,7 +75,7 @@ ROOT_URLCONF = 'rebalancer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [PROJECT_PATH],
+        'DIRS': ['templates', 'templates/registration'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
