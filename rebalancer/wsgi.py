@@ -11,12 +11,14 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
+import sys, logging
 
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rebalancer.settings")
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rebalancer.settings")
 
 application = get_wsgi_application()
 application = DjangoWhiteNoise(application)  # added for Heroku
+application.logger.addHandler(logging.StreamHandler(sys.stdout))
+application.logger.setLevel(logging.ERROR)
 
 try:
     from dj_static import Cling
