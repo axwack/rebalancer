@@ -2,7 +2,6 @@ from .base import *
 import dj_database_url, os
 
 DEBUG = False
-TEMPLATE_DEBUG = False
 
 
 print "USING PRODUCTION SETTINGS..."
@@ -16,7 +15,6 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'staticfiles'),
-    os.path.join(BASE_DIR, 'staticfiles/registration'),
 )
 
 print "Heroku [STATICFILES_DIRS]: %s" % (STATICFILES_DIRS)
