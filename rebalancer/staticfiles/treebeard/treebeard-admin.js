@@ -231,8 +231,8 @@
                             }
                         });
                     }
-                }
-                stop_drag();
+                    }
+                    stop_drag();
             }).bind('keyup', function (kbevt) {
                 // Cancel drag on escape
                 if (kbevt.keyCode === 27) {

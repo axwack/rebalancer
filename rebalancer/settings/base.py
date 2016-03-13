@@ -28,18 +28,21 @@ print "BASE [BASE DIR]: %s" % (BASE_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ')jlb!a3nqv!=j5dp#m1hplc$@%sxf#ut^p%d+@f1^f3=(ap&j6'
 
+ROOT_URLCONF = 'rebalancer.urls'
 
 INSTALLED_APPS = (
+
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sites',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'registration',
-    'django.contrib.admin',
+
     # Third Party
     'crispy_forms',
+    'registration',
     'rest_framework',
     'treebeard',
 
@@ -68,12 +71,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware'
 )
 
-ROOT_URLCONF = 'rebalancer.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_PATH, 'templates'), os.path.join(PROJECT_PATH, 'templates/registration')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/registration')],
         # 'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -82,7 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ]
         },
     },
 ]

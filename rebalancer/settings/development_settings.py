@@ -4,7 +4,6 @@ import os
 print "USING DEVELOPMENT SETTINGS....."
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 

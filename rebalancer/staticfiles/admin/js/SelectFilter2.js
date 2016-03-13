@@ -8,7 +8,7 @@
         // returns the node of the form containing the given node
         if (node.tagName.toLowerCase() != 'form') {
             return findForm(node.parentNode);
-        }
+    }
         return node;
     }
 
@@ -32,7 +32,7 @@
                     // boxes or wrapped off on the side to the right of the add
                     // button:
                     from_box.parentNode.insertBefore(ps[i], from_box.parentNode.firstChild);
-                }
+            }
             }
 
             // <div class="selector"> or <div class="selector stacked">
@@ -126,7 +126,7 @@
                 } else {
                     // This fieldset is probably collapsed. Wait for its 'show' event.
                     j_to_box.closest('fieldset').one('show.fieldset', resize_filters);
-                }
+            }
             }
 
             // Initial icon refresh
@@ -153,7 +153,7 @@
                 from.selectedIndex = 0;
                 event.preventDefault()
                 return false;
-            }
+        }
         },
         filter_key_up: function (event, field_id) {
             var from = document.getElementById(field_id + '_from');
@@ -180,7 +180,7 @@
                 from.selectedIndex = (from.selectedIndex == 0) ? from.length - 1 : from.selectedIndex - 1;
             }
             return true;
-        }
+    }
     }
 
 })(django.jQuery);

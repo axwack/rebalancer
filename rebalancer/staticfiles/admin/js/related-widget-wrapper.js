@@ -11,7 +11,6 @@ django.jQuery(function ($) {
             });
         } else siblings.removeAttr('href');
     }
-
     var container = $(document);
     container.on('change', '.related-widget-wrapper select', updateLinks);
     container.find('.related-widget-wrapper select').each(updateLinks);
