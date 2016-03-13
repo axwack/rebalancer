@@ -32,6 +32,9 @@ ROOT_URLCONF = 'rebalancer.urls'
 
 INSTALLED_APPS = (
 
+    # MY app
+    'equity',
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,12 +45,10 @@ INSTALLED_APPS = (
 
     # Third Party
     'crispy_forms',
-    'registration',
-    'rest_framework',
-    'treebeard',
 
-    # MY app
-    'equity',
+    'rest_framework',
+    'treebeard'
+
 )
 
 # REGISTRARIONT REDUx
@@ -69,6 +70,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware'
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader'
 )
 
 
