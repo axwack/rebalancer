@@ -1,9 +1,8 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 print "USING BASE SETTINGS...."
-
-from django.core.exceptions import ImproperlyConfigured
 
 def get_env_variable(var_name):
     """ Get the environment variable or return exception """
@@ -31,17 +30,14 @@ SECRET_KEY = ')jlb!a3nqv!=j5dp#m1hplc$@%sxf#ut^p%d+@f1^f3=(ap&j6'
 
 
 INSTALLED_APPS = (
-
     'django.contrib.auth',
-    'django.contrib.sites',
-    'registration',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.sessions',
-
     'django.contrib.messages',
-    'django.contrib.admin',
     'django.contrib.staticfiles',
-
+    'registration',
+    'django.contrib.admin',
     # Third Party
     'crispy_forms',
     'rest_framework',
@@ -78,6 +74,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(PROJECT_PATH, 'templates'), os.path.join(PROJECT_PATH, 'templates/registration')],
+        # 'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
