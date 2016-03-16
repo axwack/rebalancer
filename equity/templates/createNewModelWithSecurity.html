@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
-
 {% load staticfiles %}
 
-{% block title %} Select Securities Selection{% endblock %}
 
 {% block nav_active_list %}
     <ul class="nav navbar-nav">
@@ -55,6 +53,20 @@
 {% endblock %}
 
 {% block primary %}
+ {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    <div{% if message.tags %}
+                        role="alert" class="alert alert-success alert-dismissible"
+                    {% endif %}>
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Success! </strong>{{ message }}
+                    {% endif %}
+                    </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
     <div class =row>
@@ -92,9 +104,7 @@
 {% block script %}
 <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
 <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css"%}"/>
-
-
-    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+<script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
 
 <script type="text/javascript">
 

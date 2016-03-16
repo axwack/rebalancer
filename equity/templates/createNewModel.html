@@ -5,7 +5,7 @@
 
 {% include 'bootstrap3/layout/help_text_and_errors.html' %}
 
-{% block title %}Create New Security Selection Model:{% endblock %}
+{% block title %}Create New Security Selection Model{% endblock %}
 
 {% block nav_active_list %}
     <ul class="nav navbar-nav">
@@ -51,19 +51,7 @@
 {% block primary %}
     <legend>Models:</legend>
 
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    <div{% if message.tags %}
-                        role="alert" class="alert alert-success fade in"
-                    {% endif %}>
-                    {{ message }}
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+
     <div class=row>
         <div class="col-sm-12 col-sm-offset">
             <div id="showresults"></div>

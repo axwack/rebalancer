@@ -2,8 +2,6 @@
 
 {% load staticfiles %}
 
-{% block title %} Select Securities Selection{% endblock %}
-
 {% block nav_active_list %}
     <ul class="nav navbar-nav">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
@@ -45,16 +43,12 @@
     </ul>
 {% endblock %}
 
+{% block title %}Delete Security Selection Models {% endblock %}
+
 {% block primary %}
+
     <span id="notification" style="display:none;"></span>
     <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
-    <div class=row>
-        <div class="col-sm-12 col-sm-offset">
-            <div class="page-header">
-                <h3>Delete Security Selection Models</h3>
-            </div>
-        </div>
-    </div>
     <div class=row>
         <div class="col-md-12">
             <div class="page-header">
@@ -107,7 +101,7 @@
                     top: 30,
                     right: 30
                 },
-                autoHideAfter: 500,
+                autoHideAfter: 7000,
                 stacking: "down",
                 templates: [{
                     type: "info",
@@ -148,14 +142,17 @@
                     success: function (response) {
 
                         notification.show({
-                            title: "Model Deleted.",
-                            message: "Model: "
+                            title: "Success",
+                            message: "Model was deleted." //TODO: Add the model name to the alert in the delete event.
                         }, "info");
-                        window.location.href = "../deleteSecuritySelectionModels/";
+
+                    },
+                    complete: function(response){
+                        window.location = '../deleteSecuritySelectionModels/'
                     }
                 });
 
-                //window.location = '../deleteSecuritySelectionModels/' + dataItem.id;
+
             }
 
             $(document).one("kendo:pageUnload", function () {
