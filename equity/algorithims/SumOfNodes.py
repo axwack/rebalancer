@@ -8,25 +8,50 @@ def returnPercentOfNodeRoot(SSM_id, ext_model_id, tgtWeight):
         childNodes = passedNode.get_children()
         numberOfChildNodes = passedNode.get_children_count()
     else:
-        rootSSMNode = passedNode.get_parent()  # get the root parent of the node for that part of the tree
+        parentSSMNode = passedNode.get_parent()  # get the root parent of the node for that part of the tree
 
-        rootSSMNode.tgtWeight = 0
+        parentSSMNode.tgtWeight = 0
         passedNode.tgtWeight = float(tgtWeight)
-        rootSSMNode.tgtWeight = passedNode.tgtWeight
+        parentSSMNode.tgtWeight = passedNode.tgtWeight
 
         siblings = passedNode.get_siblings()  # get the nodes in the same class, row, sibling
-        numOfChildNodes = rootSSMNode.get_children_count()
+        numOfChildNodes = parentSSMNode.get_children_count()
 
-        valuesToAllocate = (100 - float(tgtWeight)) / (numOfChildNodes - 1)
+
+        if not parentSSMNode.parent_id is None:
+            parentSSMNode.tgtWeight = 0
+            passedNode.tgtWeight = float(tgtWeight)
+            parentSSMNode.tgtWeight = passedNode.tgtWeight
+
+            siblings = passedNode.get_siblings()  # get the nodes in the same class, row, sibling
+            numOfChildNodes = parentSSMNode.get_children_count()
+
+            valuesToAllocate = (100 - float(tgtWeight)) / (numOfChildNodes - 1)
+
+        else: #We are in a root node so allocate the percentage to the bottom of the rows
+             childNodes = passedNode.get_children()
+
+             for child in childNodes:
+                 child.tgtWeight = passedNode.tgtWeight / passedNode.get_children_count()
+                 child.save()
+
+             valuesToAllocate = (100 - float(tgtWeight)) / numOfChildNodes
 
         for sibling in siblings:
             if not (sibling.ext_model_id == int(ext_model_id)):
                 sibling.tgtWeight = float(valuesToAllocate)
-                rootSSMNode.tgtWeight += float(valuesToAllocate)
+                parentSSMNode.tgtWeight += float(valuesToAllocate)
 
             sibling.save()
-            rootSSMNode.save()
+            parentSSMNode.save()
 
-    passedNode.save()
+        passedNode.save()
+
+    # test the root node children which should be the branches
+    rootNode = passedNode.get_root()
+
+    branches = rootNode.get_root_nodes()
+    
+
 
     return UserSecuritySelectionModel.objects.filter(ext_model_id=ext_model_id, SSM_id=SSM_id)

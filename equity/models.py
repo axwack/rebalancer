@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from treebeard.al_tree import AL_Node
+from django.core.exceptions import ValidationError
+from equity.validators import validate_tgtWeights
 
 
 # Create your models here.
@@ -343,9 +345,18 @@ class UserSecuritySelectionModel(AL_Node):
     isSSMNameNode = models.BooleanField()
     SSM = models.ForeignKey(SecuritySelectionModels)
     classificationName = models.ForeignKey(ClassificationNames, null=True)
-    tgtWeight = models.FloatField()
+    tgtWeight = models.FloatField(validators=[validate_tgtWeights])
     currWeight = models.FloatField()
     hasChildNode = models.BooleanField()
     ext_model_id = models.IntegerField()
 
     node_order_by = ['ext_model_id']
+
+
+class InvestmentClass(models.Model):
+    inv_class_cd = models.CharField(max_length=100, primary_key=True)
+    inv_class_name = models.CharField(max_length=200)
+
+
+
+

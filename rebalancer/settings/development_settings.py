@@ -49,3 +49,11 @@ LOGGING = {
         },
     },
 }
+
+# eMail Settings
+DEFAULT_FROM_EMAIL = 'Christopher Lee <vincent.lee@portfolio270.xyz>'
+EMAIL_HOST = 'smtp.postmarkapp.com'
+EMAIL_PORT = 2525
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '9aeb6e3e-b988-4f35-8ffc-2442270d913d'
+EMAIL_HOST_PASSWORD = '9aeb6e3e-b988-4f35-8ffc-2442270d913d'

@@ -15,6 +15,10 @@ def JSONtoTreeBeard(obj):
         treeString = obj.pop()
 
         root = SecuritySelectionModels.objects.filter(pk=treeString['id'])
+
+    elif isinstance(obj, UserSecuritySelectionModel)==True:
+        createChildObj(obj)
+
     else:
         treeString = json.loads(obj)
         root = SecuritySelectionModels.objects.filter(pk=treeString[0]['id'])
@@ -43,9 +47,8 @@ def JSONtoTreeBeard(obj):
             if not node.is_child_of(root):
                 root.add_child(instance=node)
 
-
-
 def createChildObj(child, root):
+
     childObj = UserSecuritySelectionModel()
     childObj.classificationName = ClassificationNames.objects.get(classificationName=child['classificationName'])
     childObj.ext_model_id = child['id']
@@ -64,3 +67,7 @@ def createChildObj(child, root):
     # add the child to the object
 
     return childObj
+
+
+
+
