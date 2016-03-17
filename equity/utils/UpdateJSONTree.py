@@ -28,8 +28,25 @@ def UpdateSSM(topNode, SSMModel):
 
                 if 'child' in topNode:
                     for eachChildinTopNode in topNode['child']:
-                        ParentOfPreviousNode = UserSecuritySelectionModel.objects.get(
-                            ext_model_id=eachChildinTopNode['ext_model_id'], SSM_id=SSMModel)
+                        # if there is a node that is added but doesn't have an ext_model_id handle differently
+
+
+                        if 'ext_model_id' in eachChildinTopNode:
+                            ParentOfPreviousNode = UserSecuritySelectionModel.objects.get(
+                                ext_model_id=eachChildinTopNode['ext_model_id'], SSM_id=SSMModel)
+                        else:
+                            # if you have an existing node => and an added Node we need to handle because this code moves on doesn't handle the
+                            # next node
+                            # ParentofPreviousNode should already be defined
+                            classification = ClassificationNames.objects.get(
+                                classificationName=eachChildinTopNode['classificationName'])
+                            newNodeCreated = UserSecuritySelectionModel.create(False,
+                                                                               SecuritySelectionModels.objects.get(
+                                                                                   id=SSMModel), classification, 0, 0,
+                                                                               False, classification.id)
+
+                            tempNode.add_child(instance=newNodeCreated)  # tempNode is typically the root
+
                         # check to see if it is an actual child, if so and the hasChildNode is false set to True
                         allChildrenOfParentPreviousNode = returnChild(ParentOfPreviousNode, eachChildinTopNode, SSMModel)
 
@@ -60,7 +77,7 @@ def createUserSecuritySelectionModel(childOfPreviousNode, SSMModel):
     return newChild
 
 
-def creatUSSMNoPrev(hasChildNode, classificationName, id, SSMModel):
+def creatUSSMNoPrev(hasChildNode, id, SSMModel):
     newChild = UserSecuritySelectionModel()
     newChild.hasChildNode = hasChildNode
     newChild.tgtWeight = 0.0
