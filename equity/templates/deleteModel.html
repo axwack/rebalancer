@@ -146,13 +146,11 @@
                             message: "Model was deleted." //TODO: Add the model name to the alert in the delete event.
                         }, "info");
 
-                    },
+                    } ,
                     complete: function(response){
-                        window.location = '../deleteSecuritySelectionModels/'
-                    }
+                            window.setTimeout(gotoNextWindow,7000);
+                   }
                 });
-
-
             }
 
             $(document).one("kendo:pageUnload", function () {
@@ -160,6 +158,10 @@
                     notification.hide();
                 }
             });
+
+            function gotoNextWindow(){
+                window.location = '../deleteSecuritySelectionModels/';
+            }
         });
 
     </script>

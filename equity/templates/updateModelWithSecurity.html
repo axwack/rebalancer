@@ -53,6 +53,7 @@
 {% endblock %}
 
 {% block primary %}
+    <div id="alerts"></div>
 
     <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
     <div class=row>
@@ -307,6 +308,15 @@
                 }
             });
 
+            function addAlert(message) {
+                $('#alerts').append(
+                        '<div class="alert">' +
+                        '<button type="button" class="close" data-dismiss="alert">' +
+                        '&times;</button>' + message + '</div>');
+            }
+
+
+
             $("#btn-update").on("click", function (e) {
 
                 var treeView2 = $("#treeView2").data("kendoTreeView");
@@ -327,6 +337,9 @@
                     },
                     success: function (response) {
                         window.location.href = "{% url 'createModelWeights' %}?id={{ id }}&SSMModel={{ securitySelectionModelName }}";
+                    },
+                    error: function (error) {
+                        addAlert(error);
                     }
                 });
 
