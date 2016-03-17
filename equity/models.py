@@ -350,6 +350,19 @@ class UserSecuritySelectionModel(AL_Node):
     hasChildNode = models.BooleanField()
     ext_model_id = models.IntegerField()
 
+    @classmethod
+    def create(cls, isSSMNameNode, SSM, classificationName, tgtWeight, currWeight, hasChildNode, ext_model_id):
+        UserSecuritySelectionModel = cls(isSSMNameNode=isSSMNameNode,
+                                         SSM=SSM,
+                                         classificationName=classificationName,
+                                         tgtWeight=tgtWeight,
+                                         currWeight=currWeight,
+                                         hasChildNode=hasChildNode,
+                                         ext_model_id=ext_model_id
+                                         )
+
+        return UserSecuritySelectionModel
+
     node_order_by = ['ext_model_id']
 
 
