@@ -72,10 +72,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware'
 )
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
-)
+# TEMPLATE_LOADERS = (
+#    'django.template.loaders.filesystem.Loader',
+#    'django.template.loaders.app_directories.Loader'
+# )
 
 
 TEMPLATES = [
@@ -83,19 +83,20 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates/registration')],
         # 'DIRS': [],
-        'APP_DIRS': True,
         'OPTIONS': {
+            'loaders': ('django.template.loaders.filesystem.Loader',
+                        'django.template.loaders.app_directories.Loader'
+                        ),
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ]
+            ],
         },
     },
 ]
 
-print TEMPLATES[0]['DIRS']
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
