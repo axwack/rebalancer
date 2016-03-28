@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 get = lambda node_id, SSMModel: UserSecuritySelectionModel.objects.get(ext_model_id=node_id,SSM_id=SSMModel)
 
 def UpdateSSM(topNode, SSMModel):
-
-    if isinstance(topNode, list)==True:
+    if isinstance(topNode, list) == True:
         topNode = topNode.pop()
 
         try:
@@ -53,6 +52,7 @@ def UpdateSSM(topNode, SSMModel):
 
         except MultipleObjectsReturned:
             raise Http404("More than one Security Selection Model was returned. Is there only one?")
+
 
 def createUserSecuritySelectionModel(childOfPreviousNode, SSMModel):
 
