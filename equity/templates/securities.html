@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% load crispy_forms_tags %}
+{% load staticfiles %}
+
 
 {% block css %}
-    <link href="..{{ STATIC_URL }}/bootstrap/css/sumoselect.css" rel="stylesheet">
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 {% endblock %}
 
@@ -61,42 +63,18 @@
 
 {% block primary %}
     <legend>Securities</legend>
-    <fieldset>
+    <form method="post" class="uniForm">
 
-        <!--{{ securities_form | crispy }} -->
         {% crispy securities_form securities_form.helper %}
-        {%  comment %}
 
-      <ul class="nav nav-tabs">
-          <li role="presentation" class="active" data-toggle="tab"><a href="#A">Common Stock</a></li>
-          <li role="presentation"><a href="#B" data-toggle="tab">Mutual Funds</a></li>
-          <li role="presentation"><a href="#" data-toggle="tab">Fixed Income</a></li>
-          <li role="presentation"><a href="#C" data-toggle="tab">Derivatives</a></li>
-      </ul>
+    </form>
 
-      <!-- Tab panes -->
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="A">
-                Content inside tab A
-        </div>
-        <div class="tab-pane fade" id="B">
-            Content inside tab B
-        </div>
-        <div class="tab-pane fade" id="C">
-            Content inside tab C
-        </div>
-    </div>
-
-    {% endcomment %}
-
-    </fieldset>
 {% endblock %}
 
 {% block script %}
-    <link rel="stylesheet" href="..{{ STATIC_URL }}kendo/styles/kendo.common.min.css"/>
-    <link rel="stylesheet" href="..{{ STATIC_URL }}kendo/styles/kendo.default.min.css"/>
-
-    <script src="..{{ STATIC_URL }}kendo/js/kendo.all.min.js"></script>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
+    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 

@@ -98,6 +98,11 @@ class Countries(models.Model):
     cntry_name = models.CharField(max_length=1000)
     iso_cntry_cd = models.CharField(max_length=50)
 
+    def natural_key(self):
+        return self.cntry_name
+
+    def __unicode__(self):
+        return self.cntry_name
 
 class Currencies(models.Model):
     currencyCd = models.CharField(max_length=100, null=True)
@@ -162,28 +167,132 @@ class Identity(models.Model):
 
 
 class Security(models.Model):
+    AL = 'Alabama',
+    AK = 'Alaska',
+    AZ = 'Arizona',
+    AR = 'Arkansas',
+    CA = 'California',
+    CO = 'Colorado',
+    CT = 'Connecticut',
+    DE = 'Delaware',
+    FL = 'Florida',
+    GA = 'Georgia',
+    HI = 'Hawaii',
+    ID = 'Idaho',
+    IL = 'Illinois',
+    IN = 'Indiana',
+    IA = 'Iowa',
+    KS = 'Kansas',
+    KY = 'Kentucky',
+    LA = 'Louisiana',
+    ME = 'Maine',
+    MD = 'Maryland',
+    MA = 'Massachusetts',
+    MI = 'Michigan',
+    MN = 'Minnesota',
+    MS = 'Mississippi',
+    MO = 'Missouri',
+    MT = 'Montana',
+    NE = 'Nebraska',
+    NV = 'Nevada',
+    NH = 'New Hampshire',
+    NJ = 'New Jersey',
+    NM = 'New Mexico',
+    NY = 'New York',
+    NC = 'North Carolina',
+    ND = 'North Dakota',
+    OH = 'Ohio',
+    OK = 'Oklahoma',
+    OR = 'Oregon',
+    PA = 'Pennsylvania',
+    RI = 'Rhode Island',
+    SC = 'South Carolina',
+    SD = 'South Dakota',
+    TN = 'Tennessee',
+    TX = 'Texas',
+    UT = 'Utah',
+    VT = 'Vermont',
+    VA = 'Virginia',
+    WA = 'Washington',
+    WV = 'West Virginia',
+    WI = 'Wisconsin',
+    WY = 'Wyoming',
+
+    STATE_CHOICES = (
+        (AL, 'Alabama'),
+        (AK, 'Alaska'),
+        (AZ, 'Arizona'),
+        (AR, 'Arkansas'),
+        (CA, 'California'),
+        (CO, 'Colorado'),
+        (CT, 'Connecticut'),
+        (DE, 'Delaware'),
+        (FL, 'Florida'),
+        (GA, 'Georgia'),
+        (HI, 'Hawaii'),
+        (ID, 'Idaho'),
+        (IL, 'Illinois'),
+        (IN, 'Indiana'),
+        (IA, 'Iowa'),
+        (KS, 'Kansas'),
+        (KY, 'Kentucky'),
+        (LA, 'Louisiana'),
+        (ME, 'Maine'),
+        (MD, 'Maryland'),
+        (MA, 'Massachusetts'),
+        (MI, 'Michigan'),
+        (MN, 'Minnesota'),
+        (MS, 'Mississippi'),
+        (MO, 'Missouri'),
+        (MT, 'Montana'),
+        (NE, 'Nebraska'),
+        (NV, 'Nevada'),
+        (NH, 'New Hampshire'),
+        (NJ, 'New Jersey'),
+        (NM, 'New Mexico'),
+        (NY, 'New York'),
+        (NC, 'North Carolina'),
+        (ND, 'North Dakota'),
+        (OH, 'Ohio'),
+        (OK, 'Oklahoma'),
+        (OR, 'Oregon'),
+        (PA, 'Pennsylvania'),
+        (RI, 'Rhode Island'),
+        (SC, 'South Carolina'),
+        (SD, 'South Dakota'),
+        (TN, 'Tennessee'),
+        (TX, 'Texas'),
+        (UT, 'Utah'),
+        (VT, 'Vermont'),
+        (VA, 'Virginia'),
+        (WA, 'Washington'),
+        (WV, 'West Virginia'),
+        (WI, 'Wisconsin'),
+        (WY, 'Wyoming'),
+    )
+
 
     secId = models.IntegerField(primary_key=True)
     extSecId = models.CharField(max_length=100, null=True)
-    secName = models.CharField(max_length=100, blank=False)
-    shortName = models.CharField(max_length=100, null=True)
+    secName = models.CharField(max_length=100, blank=False, verbose_name="Security Name")
+    shortName = models.CharField(max_length=100, null=True, verbose_name="Short Name")
     secType = models.ForeignKey(SecurityType)
-    issueState = models.CharField(max_length=100, null=True)
-    issueCountry = models.ForeignKey(Countries)
-    issueDate = models.DateField
+    issueState = models.CharField(max_length=100, choices=STATE_CHOICES, verbose_name="Issue State")
+    issueCountry = models.ForeignKey(Countries, verbose_name="Issue Country")
+    issueDate = models.DateField()
     locCurrencyCd = models.CharField(max_length=20)
     crossCurrencyCd = models.CharField(max_length=20)
-    listExchCd = models.CharField(max_length=20)
-    baseCurrency = models.CharField(max_length=5, default='USD')
-    mktPrice = models.FloatField()
+    listExchCd = models.CharField(max_length=20, verbose_name="Exchange")
+    baseCurrency = models.CharField(max_length=5, default='USD', verbose_name="Base Curr.")
+    mktPrice = models.FloatField(verbose_name="Market Price")
     amtIssued = models.FloatField()
     amtOutstanding = models.FloatField()
-    couponRate = models.FloatField()
+    couponRate = models.FloatField(verbose_name="Coupon/Int. Rate")
     ticker = models.CharField(max_length=100, null=True)
-    isin = models.CharField(max_length=100, null=True)
+    isin = models.CharField(max_length=100, null=True, verbose_name="ISIN")
     sedol = models.CharField(max_length=100, null=True)
     cusip = models.CharField(max_length=100, null=True)
-    RIC = models.CharField
+    RIC = models.CharField(max_length=100, verbose_name="Reuters IC")
     valoran = models.CharField(max_length=100, null=True)
     avgLife = models.DateField
     matureDate = models.DateField
@@ -369,7 +478,3 @@ class UserSecuritySelectionModel(AL_Node):
 class InvestmentClass(models.Model):
     inv_class_cd = models.CharField(max_length=100, primary_key=True)
     inv_class_name = models.CharField(max_length=200)
-
-
-
-

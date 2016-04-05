@@ -1,363 +1,1 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-
-
-{% block nav_active_list %}
-    <ul class="nav navbar-nav">
-    <li class=""><a href="{% url 'home' %}">Home</a></li>
-    <li class="dropdown">
-        <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
-           aria-haspopup="true"
-           aria-expanded="false">
-            New Rebalance <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>
-            <li><a href="#">Select an Existing Rebalance</a></li>
-        </ul>
-    </li>
-
-    <li class="dropdown">
-        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false">
-            Accounts <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
-        </ul>
-    </li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false">
-            Reference Data<span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="">Positions</a></li>
-            <li><a href="#">Tax Lots</a></li>
-            <li><a href="#">Accounts</a></li>
-        </ul>
-    </li>
-    <li><a href="{% url 'securities' %}">Securities</a></li>
-    <li class="dropdown active">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false">
-            Create AAM/SSM <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
-            <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
-            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
-        </ul>
-    </li>
-    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
-{% endblock %}
-
-{% block primary %}
-    <div id="alerts"></div>
-
-    <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">
-    <div class=row>
-        <div class="col-sm-12 col-sm-offset">
-            <div class="page-header">
-                <h3>Model: <span class="label label-default">{{ securitySelectionModelName }}</span></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Source Classifications:</h4>
-            <div id="treeView1"></div>
-        </div>
-
-        <div class="col-md-6">
-            <h4>Security Selection Model:</h4>
-            <div id="treeView2"></div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">&nbsp;</div>
-        <div class="col-md-6">
-            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                <button type="button" class="btn btn-primary " id="btn-update">Update</button>
-                <button type="button" class="btn btn-primary" id="btn-cancel">Cancel</button>
-            </div>
-        </div>
-    </div>
-    </ul>
-{% endblock %}
-
-{% block script %}
-    {%  comment %}
-    <link rel="stylesheet" href="{% static "kendo/styles/kendo.bootstrap.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
-    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
-    {% endcomment %}
-
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2016.1.112/styles/kendo.common.min.css"/>
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2016.1.112/styles/kendo.bootstrap.min.css"/>
-    <script src="https://kendo.cdn.telerik.com/2016.1.226/js/kendo.all.min.js"></script>
-
-
-    <script type="text/javascript">
-
-        //TODO: Create drop on SSM Model Treeview 2
-
-        function treeToJson(nodes) {
-
-            return $.map(nodes, function (n, i) {
-
-                var result = {
-                    classificationName: n.classificationName,
-                    id: n.id,
-                    expanded: n.expanded,
-                    checked: n.checked,
-                    ext_model_id: n.ext_model_id,
-                    hasChildNode: n.hasChildren
-                };
-
-                if (n.hasChildren)
-                    result.child = treeToJson(n.children.view());
-                return result;
-            });
-        }
-
-        var observableData = [{
-            id: {{ id }},
-            classificationName: "{{ securitySelectionModelName }}",
-            hasChildren: "true"
-        }];
-
-        var ext_model_id="";
-
-        $(document).ready(function () {
-
-            //TODO:Need to erase nodes from TV2
-
-            var classificationData = new kendo.data.HierarchicalDataSource({
-                transport: {
-                    read: {
-                        url: "{%  url 'getClassifications' %}",
-                        contentType: "application/json",
-                        datatype: "json",
-                    }
-                },
-                schema: {
-                    type: "json",
-                    model: {
-                        id: "id",
-                        hasChildren: "hasChildNode"
-                    },
-                    data: function (data) {
-
-                        if (data.length > 0) {
-                            return data;
-                        } else {
-                            return [data];
-                        }
-
-                    }
-                }
-            });
-
-            $("#treeView1").kendoTreeView({
-                dragAndDrop: true,
-                theme: "bootstrap",
-                dataSource: classificationData,
-                dataTextField: "classificationName",
-                dataValueField: "id",
-                change: function (e) {
-                    classificationData.read();
-                },
-                drag: function (e) {
-                    /*
-                     if (!$("#treeView1").data('kendoTreeView').dataItem(e.sourceNode).hasChildren && $.contains($('#treeView2')[0], e.dropTarget)) {
-                     e.setStatusClass('k-add');
-
-                     // var dataItem = classificationData.get(e.sourceNode);
-                     // var selectedRow = $("treeView1").data('kendoTreeView').findByText(e.sourceNode.textContent);
-                     //  $("#treeView1").data("kendoTreeView").remove(selectedRow);
-                     } else {
-                     e.setStatusClass('k-denied');
-                     }
-                     */
-                },
-
-                drop: function (e) {
-                    if ($.contains($('#treeView2')[0], e.dropTarget)) {
-                        if (e.destinationNode.textContent == e.sourceNode.textContent) {
-                            e.preventDefault();
-                            //e.setStatusClass('k-denied');
-                        }
-                        if ($("#treeView2").data("kendoTreeView").findByText(e.sourceNode.textContent).length > 0) {
-                            e.preventDefault();
-                        }
-                    }
-                },
-                dataBound: function () {
-                    this.expand('.k-item');
-                }
-            });
-
-
-            var securitySelectionModelData = new kendo.data.HierarchicalDataSource({
-                transport: {
-                    read: {
-                        url: "../../getSavedClassificationModel/{{ id }}",
-                        contentType: "application/json",
-                        datatype: "json"
-                    },
-                    update: {
-                        url: "{% url 'updateModelNodes' %}",
-                        contentType: "application/json",
-                        datatype: "json",
-                    }
-                },
-                schema: {
-                    type: "json",
-                    model: {
-                        id: "ext_model_id",
-                        hasChildren: "hasChildNode"
-
-                    },
-                    parse: function (response) {
-                        NodeArray = [];
-
-                        if (response.length == undefined) {
-
-                            var node = {
-                                id: response.id,
-                                currWeight: response.currWeight,
-                                tgtWeight: response.tgtWeight,
-                                hasChildNode: response.hasChildNode,
-                                parentId: response.parent,
-                                ext_model_id: response.ext_model_id,
-                                SSM_id: response.SSM.id,
-                                securitySelectionModelName: response.SSM.securitySelectionModelName,
-                                classificationName: response.classificationName,
-
-                            };
-
-                            if (typeof response.classificationName == 'object' && response.classificationName != null) {
-                                node.classificationName = response.classificationName.classificationName;
-                                node.parentId = response.parent.id;
-                            }
-
-                            NodeArray.push(node);
-                        } else {
-                            for (var i = 0; i < response.length; i++) {
-                                var node = {
-                                    id: response[i].id,
-                                    currWeight: response[i].currWeight,
-                                    tgtWeight: response[i].tgtWeight,
-                                    hasChildNode: response[i].hasChildNode,
-                                    parentId: response[i].parent.id,
-                                    SSM_id: response[i].SSM.id,
-                                    ext_model_id: response[i].ext_model_id,
-                                    securitySelectionModelName: response[i].SSM.securitySelectionModelName,
-                                    classificationName: response[i].classificationName.classificationName,
-                                }
-                                NodeArray.push(node);
-                            }
-                        }
-                        return NodeArray;
-                    },
-                    data: function (data) {
-
-                        if (data.length > 0) {
-                            return data;
-                        } else {
-                            return [data];
-                        }
-                    }
-                }
-            });
-
-            var treeView2 = $("#treeView2").kendoTreeView({
-                dragAndDrop: true,
-
-                theme: "Bootstrap",
-                dataSource: securitySelectionModelData,
-                dataTextField: "classificationName",//["securitySelectionModelName", "classificationName.classificationName",],
-
-                drop: function (e) {
-                    var item = this.dataSource.getByUid($(e.sourceNode).attr("data-uid"));
-                    //check next, prev, parent and source
-
-                    if ($(e.dropTarget).closest("[data-role=treeview]").is("#treeView1")) {
-                        if (e.sender._current.context.textContent != 'Omit') {
-                            if (($(e.dropTarget).closest("li").attr("data-uid") != item.item_next) &&
-                                    ($(e.dropTarget).closest("li").attr("data-uid") != item.item_prev)) {
-                                e.preventDefault();
-                            }
-                        }
-                    }
-                },
-                change: function (e){
-                    ext_model_id = e.node;
-
-
-                },
-
-                dragend: function (e) {
-                    console.log("Drag end", e.sourceNode, e.dropPosition, e.destinationNode);
-                },
-                dataBound: function () {
-                    this.expand('.k-item');
-                }
-            });
-
-            function addAlert(message) {
-                $('#alerts').append(
-                        '<div class="alert">' +
-                        '<button type="button" class="close" data-dismiss="alert">' +
-                        '&times;</button>' + message + '</div>');
-            }
-
-
-
-            $("#btn-update").on("click", function (e) {
-
-                var treeView2 = $("#treeView2").data("kendoTreeView");
-
-                var json = treeToJson(treeView2.dataSource.view());
-
-                console.log(JSON.stringify(json));
-
-
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'updateModelNodes' %}",
-                    async: true,
-                    data: {
-                        dataSource: JSON.stringify(json),
-                        csrfmiddlewaretoken: '{{ csrf_token  }}',
-                        ssmModel: $("#securitySelectionPK").val()
-                    },
-                    success: function (response) {
-                        window.location.href = "{% url 'createModelWeights' %}?id={{ id }}&SSMModel={{ securitySelectionModelName }}";
-                    },
-                    error: function (error) {
-                        addAlert(error);
-                    }
-                });
-
-            });
-
-            $("#btn-cancel").on("click", function (e) {
-                var treeView = $('#treeView2')
-                var treeViewData = treeView.data('kendoTreeView');
-                treeView.each(function (n, root) {
-                    for (var i = root.childNodes[0].childNodes.length; i >= 1; i--) {
-                        debugger;
-                        treeViewData.remove(root.childNodes[0].childNodes[i]);
-                    }
-                });
-
-            });
-        });
-
-    </script>
-
-{% endblock %}
+{% extends 'base.html' %}{% load staticfiles %}{% block nav_active_list %}    <ul class="nav navbar-nav">    <li class=""><a href="{% url 'home' %}">Home</a></li>    <li class="dropdown">        <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"           aria-haspopup="true"           aria-expanded="false">            New Rebalance <span class="caret"></span>        </a>        <ul class="dropdown-menu">            <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>            <li><a href="#">Select an Existing Rebalance</a></li>        </ul>    </li>    <li class="dropdown">        <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"           aria-expanded="false">            Accounts <span class="caret"></span>        </a>        <ul class="dropdown-menu">            <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>        </ul>    </li>    <li class="dropdown">        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"           aria-expanded="false">            Reference Data<span class="caret"></span>        </a>        <ul class="dropdown-menu">            <li><a href="">Positions</a></li>            <li><a href="#">Tax Lots</a></li>            <li><a href="#">Accounts</a></li>        </ul>    </li>    <li><a href="{% url 'securities' %}">Securities</a></li>    <li class="dropdown active">        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"           aria-expanded="false">            Create AAM/SSM <span class="caret"></span>        </a>        <ul class="dropdown-menu">            <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>            <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>            <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>        </ul>    </li>    <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>{% endblock %}{% block primary %}    <div id="alerts"></div>    <INPUT TYPE=HIDDEN id="securitySelectionPK" value="{{ id }}">    <div class=row>        <div class="col-sm-12 col-sm-offset">            <div class="page-header">                <h3>Model: <span class="label label-default">{{ securitySelectionModelName }}</span></h3>            </div>        </div>    </div>    <div class="row">        <div class="col-md-6">            <h4>Source Classifications:</h4>            <div id="treeView1"></div>        </div>        <div class="col-md-6">            <h4>Security Selection Model:</h4>            <div id="treeView2"></div>        </div>    </div>    <div class="row">        <div class="col-md-6">&nbsp;</div>        <div class="col-md-6">            <div class="btn-group btn-group-sm" role="group" aria-label="...">                <button type="button" class="btn btn-primary " id="btn-update">Update Server</button>                <button type="button" class="btn btn-primary " id="btn-delete">Delete Checked Nodes</button>            </div>        </div>    </div>    </ul>{% endblock %}{% block script %}    {%  comment %}    <link rel="stylesheet" href="{% static "kendo/styles/kendo.bootstrap.min.css" %}"/>    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>    {% endcomment %}    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2016.1.112/styles/kendo.common.min.css"/>    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2016.1.112/styles/kendo.bootstrap.min.css"/>    <script src="https://kendo.cdn.telerik.com/2016.1.226/js/kendo.all.min.js"></script>    <script type="text/javascript">        $('#btn-delete-server').hide();        function treeToJson(nodes) {            return $.map(nodes, function (n, i) {                var result = {                    classificationName: n.classificationName,                    id: n.id,                    expanded: n.expanded,                    checked: n.checked,                    ext_model_id: n.ext_model_id,                    hasChildNode: n.hasChildren                };                if (n.hasChildren)                    result.child = treeToJson(n.children.view());                return result;            });        }        var observableData = [{            id: {{ id }},            classificationName: "{{ securitySelectionModelName }}",            hasChildren: "true"        }];        var ext_model_id="";        $(document).ready(function () {            //TODO:Need to erase nodes from TV2            var classificationData = new kendo.data.HierarchicalDataSource({                transport: {                    read: {                        url: "{%  url 'getClassifications' %}",                        contentType: "application/json",                        datatype: "json",                    }                },                schema: {                    type: "json",                    model: {                        id: "id",                        hasChildren: "hasChildNode"                    },                    data: function (data) {                        if (data.length > 0) {                            return data;                        } else {                            return [data];                        }                    }                }            });            $("#treeView1").kendoTreeView({                dragAndDrop: true,                theme: "bootstrap",                dataSource: classificationData,                dataTextField: "classificationName",                dataValueField: "id",                change: function (e) {                    classificationData.read();                },                drag: function (e) {                },                drop: function (e) {                    if ($.contains($('#treeView2')[0], e.dropTarget)) {                        if (e.dropTarget.textContent == e.sourceNode.textContent) {                            e.preventDefault();                            e.setValid(false);                        }                        if ($("#treeView2").data("kendoTreeView").findByText(e.sourceNode.textContent).length > 0) {                            e.preventDefault();                            e.setValid(false);                        }                    }                    console.log("Changes: " + securitySelectionModelData.hasChanges());                }//,                //dataBound: function () {                //    this.expand('.k-item');                //}            });            var securitySelectionModelData = new kendo.data.HierarchicalDataSource({                transport: {                    read: {                        url: "../../getSavedClassificationModel/{{ id }}",                        contentType: "application/json",                        datatype: "json"                    },                    update: {                        url: "{% url 'updateModelNodes' %}",                        contentType: "application/json",                        datatype: "json",                    }                },                schema: {                    type: "json",                    model: {                        id: "ext_model_id",                        hasChildren: "hasChildNode"                    },                    parse: function (response) {                        NodeArray = [];                        if (response.length == undefined) {                            var node = {                                id: response.id,                                currWeight: response.currWeight,                                tgtWeight: response.tgtWeight,                                hasChildNode: response.hasChildNode,                                parentId: response.parent,                                ext_model_id: response.ext_model_id,                                SSM_id: response.SSM.id,                                securitySelectionModelName: response.SSM.securitySelectionModelName,                                classificationName: response.classificationName,                            };                            if (typeof response.classificationName == 'object' && response.classificationName != null) {                                node.classificationName = response.classificationName.classificationName;                                node.parentId = response.parent.id;                            }                            NodeArray.push(node);                        } else {                            for (var i = 0; i < response.length; i++) {                                var node = {                                    id: response[i].id,                                    currWeight: response[i].currWeight,                                    tgtWeight: response[i].tgtWeight,                                    hasChildNode: response[i].hasChildNode,                                    parentId: response[i].parent.id,                                    SSM_id: response[i].SSM.id,                                    ext_model_id: response[i].ext_model_id,                                    securitySelectionModelName: response[i].SSM.securitySelectionModelName,                                    classificationName: response[i].classificationName.classificationName,                                }                                NodeArray.push(node);                            }                        }                        return NodeArray;                    },                    data: function (data) {                        if (data.length > 0) {                            return data;                        } else {                            return [data];                        }                    }                }            });            var treeView2 = $("#treeView2").kendoTreeView({                dragAndDrop: true,                checkboxes: {                    template: "<input type='checkbox' name='checkedClassifications[#= item.id #]' value='true' />"                },                theme: "Bootstrap",                dataSource: securitySelectionModelData,                dataTextField: "classificationName",//["securitySelectionModelName", "classificationName.classificationName",],                drop: function (e) {                    if ($.contains($('#treeView1')[0], e.dropTarget)) {                        if (e.destinationNode.textContent == e.sourceNode.textContent) {                            e.preventDefault();                            //e.setStatusClass('k-denied');                        }                        if ($("#treeView1").data("kendoTreeView").findByText(e.sourceNode.textContent).length > 0) {                            e.preventDefault();                        }                    }                    console.log("Changes: " + securitySelectionModelData.hasChanges());                },                change: function (e){                    ext_model_id = e.node;                },                drag: function (e) {                    if (e.statusClass == "denied") {                        // treeview already denies this operation                        return;                    } else {                        // whether the action is related to a root node                        var targetsRoot = $(e.dropTarget).parentsUntil(".k-treeview", ".k-item").length == 1;                        // if targeting a root node, and the operation isn't add                        // (this means that the operation is to insert before/after the root,                        //  which will create another root)                        if (targetsRoot && e.statusClass != "add") {                            e.setStatusClass("k-denied");                        }                    }                },                check: DeleteCheckedItems,                dragend: function (e) {                    console.log("Drag end", e.sourceNode, e.dropPosition, e.destinationNode);                },                dataBound: function () {                    this.expand('.k-item');                }            });            function addAlert(message) {                $('#alerts').append('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">' +                        '<span aria-hidden="true">&times;</span></button><strong>Warning! </strong>' + message + '</div>');            }            var checkedNodes = {};            function DeleteCheckedItems(e) {                console.log("Changes: " + securitySelectionModelData.hasChanges());                var selected = securitySelectionModelData.get(this.dataItem(e.node).id);                if (selected.checked) {                    checkedNodes[selected.id] = selected;                } else {                    delete checkedNodes[selected.id];                }            }            var deleted_keys;            $("#btn-update").on("click", function (e) {                var treeView2 = $("#treeView2").data("kendoTreeView");                var json = treeToJson(treeView2.dataSource.data()); //This could cause problems because it's one page view. What if we have two. Need to test this                console.log(JSON.stringify(json));                $.ajax({                    type: "POST",                    url: "{% url 'updateModelNodes' %}",                    async: true,                    data: {                        dataSource: JSON.stringify(json),                        csrfmiddlewaretoken: '{{ csrf_token  }}',                        ssmModel: $("#securitySelectionPK").val(),                        deleteKeys: deleted_keys                    },                    success: function (response) {                        window.location.href = "{% url 'createModelWeights' %}?id={{ id }}&SSMModel={{ securitySelectionModelName }}";                    },                    error: function (error) {                        addAlert(error);                    }                });            });            $("#btn-delete").on("click", function (e) {                deleted_keys = Object.keys(checkedNodes).sort();                for (var i = 0; i < deleted_keys.length; i++) {                    console.log(deleted_keys[i]);                    var dataItem = securitySelectionModelData.get(deleted_keys[i]);                    securitySelectionModelData.remove(dataItem);                    classificationData.add(dataItem); //Need to put back to the child                }                var json = treeToJson(securitySelectionModelData.data()); //This could cause problems because it's one page view. What if we have two. Need to test this                console.log(JSON.stringify(json));            });        });    </script>{% endblock %}

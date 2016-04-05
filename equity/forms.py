@@ -2,8 +2,8 @@ __author__ = 'vincentlee'
 
 from crispy_forms.helper import FormHelper
 from django import forms
-from crispy_forms.layout import Submit, Layout
-from crispy_forms.bootstrap import Tab, TabHolder
+from crispy_forms.layout import Submit, Layout, Button
+from crispy_forms.bootstrap import Tab, TabHolder, FormActions
 from equity.models import RebalanceParameters, AccountFilters, ClassificationNames, AccountParameters, \
     SecuritySelectionModels
 from django.utils.translation import ugettext_lazy as _
@@ -159,39 +159,63 @@ class SecuritySelectionModelForm(forms.ModelForm):
         # Always return the full collection of cleaned data.
         return cleaned_data
 
+
 class AccountsForm(forms.ModelForm):
     pass
 
+
 class SecuritiesForm(forms.ModelForm):
 
-
     def __init__(self, *args, **kwargs):
-        super(SecuritiesForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
         self.helper.layout = Layout(
             TabHolder(
                 Tab(
-                    'Common Stock',
+                    'Base',
                     'secName',
+                    'shortName',
+                    'mktPrice',
                     'secType',
-                    'identity',
-
+                    'listExchCd',
+                    'issueDate',
+                    'issueState',
+                    'issueCountry',
+                    'baseCurrency',
+                    'listExchCd',
+                    FormActions(
+                        Submit('save', 'Save changes'),
+                        Button('cancel', 'Cancel')
+                    )
                 ),
                 Tab(
                     'Fixed Income',
-                    'identity',
+                    'couponRate',
+                    'matureDate'
                 ),
                 Tab(
                     'Derivative',
-                    'ListExchCd',
+
+                ),
+                Tab(
+                    'Identifiers',
+                    'cusip',
+                    'ticker',
+                    'isin',
+                    'sedol',
+                    'valoran',
+                    'ric'
                 )
             )
+
         )
+        super(SecuritiesForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Security # Your User model
         exclude = ('secId',)
+
 
 class NoFormTagCrispyFormMixin(object):
     @property

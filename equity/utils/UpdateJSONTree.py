@@ -37,6 +37,8 @@ def UpdateSSM(topNode, SSMModel):
                             # if you have an existing node => and an added Node we need to handle because this code moves on doesn't handle the
                             # next node
                             # ParentofPreviousNode should already be defined
+
+                            ParentOfPreviousNode = tempNode  # Assumes that there is no ParentOfPreviousNode so this must be the root node
                             classification = ClassificationNames.objects.get(
                                 classificationName=eachChildinTopNode['classificationName'])
                             newNodeCreated = UserSecuritySelectionModel.create(False,

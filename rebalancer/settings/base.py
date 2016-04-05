@@ -45,10 +45,9 @@ INSTALLED_APPS = (
 
     # Third Party
     'crispy_forms',
-
+    "celery",
     'rest_framework',
     'treebeard'
-
 )
 
 # REGISTRARIONT REDUx
