@@ -61,8 +61,14 @@ LOGGING = {
 
 # Redis configurations for Celery
 # CELERY STUFF
-BROKER_URL = 'redis://ec2-54-83-207-91.compute-1.amazonaws.com:12619'
-CELERY_RESULT_BACKEND = 'redis://ec2-54-83-207-91.compute-1.amazonaws.com:12619'
+# Configure Celery
+BROKER_BACKEND = 'redis'
+
+# set the broker and result backend connection info
+BROKER_URL = get_env_variable('REDIS_URL')
+CELERY_RESULT_BACKEND = get_env_variable('REDIS_URL')
+# BROKER_URL = 'redis://ec2-54-83-207-91.compute-1.amazonaws.com:12619'
+# CELERY_RESULT_BACKEND = 'redis://ec2-54-83-207-91.compute-1.amazonaws.com:12619'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
