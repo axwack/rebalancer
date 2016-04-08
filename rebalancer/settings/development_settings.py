@@ -66,3 +66,6 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'America/New_York'
+
+# MODISAPI FOR STOCK QUOTES
+QUOTE_URL = "http://dev.markitondemand.com/MODApis/Api/v2/Quote/jsonp?symbol="
