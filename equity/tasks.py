@@ -6,7 +6,7 @@ from django.conf import settings
 from equity.models import Security
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
-
+from celery import task
 import requests
 from celery.task.schedules import crontab
 # import the logging library
@@ -31,11 +31,11 @@ def xsum(numbers):
     return sum(numbers)
 
 
-@task(name="Get_Market_Prices")
 # A periodic task that will run every minute (the symbol "*" means every)
+# @periodic_task(run_every=timedelta(day=1))
+@task(name="Get_Market_Prices")
 @periodic_task(run_every=(crontab(hour="1", minute="0", day_of_week="*")),
                ignore_result=True)
-# @periodic_task(run_every=timedelta(day=1))
 def getMarketPrices():
     securitiesToPrice = Security.objects.all()
     count = Security.objects.all().count()
