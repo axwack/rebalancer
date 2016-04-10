@@ -34,13 +34,14 @@ def xsum(numbers):
 # A periodic task that will run every minute (the symbol "*" means every)
 # @periodic_task(run_every=timedelta(day=1))
 @task(name="Get_Market_Prices")
-@periodic_task(run_every=(crontab(hour="1", minute="0", day_of_week="*")),
-               ignore_result=True)
+@periodic_task(run_every=(crontab(hour="*/1", minute="0", day_of_week="*")),
+               ignore_result=False)
 def getMarketPrices():
     securitiesToPrice = Security.objects.all()
     count = Security.objects.all().count()
 
-    logger.info('Total Securities in Rebalancer Sec Master' + count)
+    logger.info('Total Securities in Rebalancer Sec Master: %s' % count)
+    print ('[Print] Total Securities in Rebalancer Sec Master: %s' % count)
 
 
     # call out to XigNite
