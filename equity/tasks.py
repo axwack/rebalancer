@@ -7,6 +7,7 @@ from equity.models import Security
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
 from celery import task
+from datetime import timedelta
 import requests
 from celery.task.schedules import crontab
 # import the logging library
