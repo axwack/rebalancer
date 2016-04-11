@@ -77,10 +77,10 @@ CELERY_TIMEZONE = 'America/New_York'
 # from datetime import timedelta
 from celery.schedules import crontab
 
-CELERYBEAT_SCHEDULE = {
-    'add-every-1-days': {
-        'task': 'Get_Market_Prices',
-        'schedule': crontab(minute=0, hour=0),
-        'args': (16, 16)
-    },
-}
+# CELERYBEAT_SCHEDULE = {
+#    'add-every-1-days': {
+#        'task': 'Get_Market_Prices',
+#        'schedule': crontab(minute=0, hour=0),
+#        'args': (16, 16)
+#    },
+# }
