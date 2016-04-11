@@ -33,9 +33,9 @@ def xsum(numbers):
 
 # A periodic task that will run every minute (the symbol "*" means every)
 # @periodic_task(run_every=timedelta(day=1))
+# @periodic_task(run_every=(crontab(hour="*/1", minute="0", day_of_week="*")), ignore_result=False)
 @task(name="Get_Market_Prices")
-@periodic_task(run_every=(crontab(hour="*/1", minute="0", day_of_week="*")),
-               ignore_result=False)
+@periodic_task(run_every=timedelta(seconds=30))
 def getMarketPrices():
     securitiesToPrice = Security.objects.all()
     count = Security.objects.all().count()
