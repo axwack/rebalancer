@@ -167,6 +167,5 @@
         s = s.toLowerCase();               // convert to lowercase
         return s.substring(0, num_chars);  // trim to first num_chars chars
     }
-
     window.URLify = URLify;
 })();

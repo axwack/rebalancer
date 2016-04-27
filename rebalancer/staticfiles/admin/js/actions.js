@@ -34,7 +34,7 @@
                 if (checked) {
                     showQuestion();
                 } else {
-                    reset();
+                reset();
                 }
                 $(actionCheckboxes).prop("checked", checked)
                     .parent().parent().toggleClass(options.selectedClass, checked);
@@ -52,11 +52,11 @@
                     var value;
                     if (sel === actionCheckboxes.length) {
                         value = true;
-                        showQuestion();
-                    } else {
+                    showQuestion();
+                } else {
                         value = false;
                         clearAcross();
-                    }
+                }
                     return value;
                 });
             };

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static from staticfiles %}
 
 {% block title %}Status of past rebalances:{% endblock %}
 
@@ -50,28 +51,64 @@
         </ul>
     </li>
     <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+
+        {% if request.user.is_superuser %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Sys Admin <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'systemFeeds' %}">Feeds</a></li>
+                    <li><a href="{% url 'systemFeeds' %}">Other</a></li>
+                </ul>
+            </li>
+        {% endif %}
+
     </ul>
 {%  endblock %}
 
 {% block primary %}
  <fieldset>
-    <legend>Status of Rebalances:</legend>
-      <table class="table">
-        <thead>
-            <tr>
-                <th>Run ID</th>
-                <th>Status</th>
-                <th>Date Run</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tr class="success">
-            <td>1</td>
-            <td>TB - Monthly</td>
-            <td>01/04/2012</td>
-            <td>Approved</td>
-        </tr>
-      </table>
+     <div id="grid"></div>
     </fieldset>
+{% endblock %}
+
+{% block script %}
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.bootstrap.min.css" %}"/>
+
+    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+
+    <style type="text/css">
+        .btn-group, #treeGrid {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+                columns: [{
+                    field: "feed_cd",
+                    title: "Feed Code"
+                },
+                    {
+                        field: "entity_to_run",
+                        title: "Feed Entity"
+                    },
+                    {
+                        field: "enable",
+                        title: "Feed Enabled"
+                    },
+                    {
+                        field: "run_date",
+                        title: "Date Run"
+                    }
+                ]
+            });
+        });
+
+    </script>
+
 {% endblock %}
 

@@ -38,7 +38,10 @@ urlpatterns = [
     url(r'^rulesCreation/', equity.views.rulesCreation, name='rulesCreation'),
     # url(r'^models/([0-9]+)/$', 'equity.views.updateModelWithTargetWeights', name='models'),
 
-    # url(r'^updateModels/', 'equity.views.updateModelWithTargetWeights', name='updateModels'),
+    url(r'^uploadModels/', equity.views.upload, name='file_upload'),
+    # You may optionally define a delete url as well
+    url(r'^delete/(?P<pk>\d+)$', equity.views.upload_delete, name='file_delete'),
+
     url(r'^createModelName/$', equity.views.Create_Model_Name, name='createModelName'),
 
     url(r'^accountParameters/$', equity.views.accountParameters, name='accountParameters'),
@@ -76,4 +79,9 @@ urlpatterns = [
 
     # Registration
     url(r'^Accounts/', include('registration.backends.default.urls')),
+
+    # System Administration
+    url(r'^systemFeeds/$', equity.views.systemFeeds, name='systemFeeds'),
+    url(r'^editSystemFeeds/$', equity.views.systemFeeds, name='editSystemFeeds'),
+
 ]

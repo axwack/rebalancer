@@ -8,7 +8,7 @@
 {% block title %}Create New Security Selection Model{% endblock %}
 
 {% block nav_active_list %}
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav" xmlns="http://www.w3.org/1999/html">
     <li class=""><a href="{% url 'home' %}">Home</a></li>
     <li class="dropdown">
         <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -49,8 +49,9 @@
 {% endblock %}
 
 {% block primary %}
-    <legend>Models:</legend>
+    <div class="lead">Create a selection Model Name</div>
 
+    <p class="bg-info">Create a new model and use the drag drop widget to create a new Asset Allocation Model</p>
 
     <div class=row>
         <div class="col-sm-12 col-sm-offset">
@@ -59,23 +60,68 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-
             {% crispy security_selection_model_form security_selection_model_form.helper %}
+        </div>
+    </div>
 
+    <p class="lead">or Upload a Model via File</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="upload_form_cont">
+                <form id="upload_form" enctype="multipart/form-data" method="post" action="{% url 'file_upload' %}">
+                    {% csrf_token %}
+                    <div>
+                        <div><label for="csv_file"><h5>Choose a CSV file or "Drag-n-Drop onto the pallette.</h5></label>
+                        </div>
+                        <div><input type="file" name="csv_file" id="csv_file" onchange="fileSelected();"
+                                    multiple="multiple"/></div>
+
+                    </div>
+                    <div><input type="checkbox" id="includeHeaders"> File has headers? </input></div>
+                    <div>
+                        <button type="button" class="btn btn-primary" value="Upload" onclick="startUploading()">Upload
+                        </button>
+                    </div>
+                    <div id="fileinfo">
+                        <div id="filename"></div>
+                        <div id="filesize"></div>
+                        <div id="filetype"></div>
+                    </div>
+                    <div id="error">You should select valid CSV files only!</div>
+                    <div id="error2">An error occurred while uploading the file</div>
+                    <div id="abort">The upload has been canceled by the user or the browser dropped the connection</div>
+                    <div id="warnsize">Your file is very big. We can't accept it. Contact the administrator to increase
+                        size limits for your instance.
+                    </div>
+
+                    <div id="progress_info">
+                        <div id="progress"></div>
+                        <div id="progress_percent">&nbsp;</div>
+                        <div class="clear_both"></div>
+                        <div>
+                            <div id="speed">&nbsp;</div>
+                            <div id="remaining">&nbsp;</div>
+                            <div id="b_transfered">&nbsp;</div>
+                            <div class="clear_both"></div>
+                        </div>
+                        <div id="upload_response"></div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
 {% endblock %}
 
 {% block script %}
-    <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
-    <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css" %}"/>
-    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+    <link href="{% static 'fileupload/fileuploadstyle.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'fileupload/file.js' %}"></script>
+
 
     <style type="text/css">
         .btn-group, #treeGrid {
             display: none;
         }
     </style>
-
 {% endblock %}
+

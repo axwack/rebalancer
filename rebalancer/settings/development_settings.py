@@ -7,7 +7,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 print 'STATIC_ROOT(DEV): %s' % STATIC_ROOT
 
@@ -25,7 +25,7 @@ if 'RDS_DB_NAME' in os.environ:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'rebalancerDB',
             'USER': 'vincentlee',
             'PASSWORD': '708husch',
@@ -34,6 +34,40 @@ else:
         }
     }
 
+# Enable file based logging for internal or development hosted environments. Logging is done with papertrail on heroku for production.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(name)s\n%(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'simple',
+            'filename': LOG_FILES_DIR + '/debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'rebalancer_log': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
 
 # eMail Settings
 DEFAULT_FROM_EMAIL = 'Christopher Lee <vincent.lee@portfolio270.xyz>'

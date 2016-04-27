@@ -5,7 +5,7 @@ SQL Load Files
 
 .sh
 .sql
-
+.idea
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

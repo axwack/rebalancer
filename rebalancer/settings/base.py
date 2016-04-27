@@ -2,6 +2,7 @@
 import os
 from django.core.exceptions import ImproperlyConfigured
 
+
 print "USING BASE SETTINGS...."
 
 def get_env_variable(var_name):
@@ -13,15 +14,14 @@ def get_env_variable(var_name):
         raise ImproperlyConfigured(error_msg)
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print "BASE_DIR %s" % (BASE_DIR)
-
+ROOT_DIR = os.path.abspath(os.path.dirname(__name__))
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = os.path.join(BASE_DIR, 'equity')
-
-
 print "BASE [PROJECT PATH]: %s" % (PROJECT_PATH)
 print "BASE [BASE DIR]: %s" % (BASE_DIR)
 
+LOG_FILES_DIR = os.path.join(ROOT_DIR, "logs")
+print "LOG DIRECTORY: %s " % LOG_FILES_DIR
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -47,7 +47,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     "celery",
     'rest_framework',
-    'treebeard'
+    'treebeard',
+    'django_extensions'
 )
 
 # REGISTRARIONT REDUx
@@ -71,10 +72,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware'
 )
 
-# TEMPLATE_LOADERS = (
-#    'django.template.loaders.filesystem.Loader',
-#    'django.template.loaders.app_directories.Loader'
-# )
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+    'django.core.context_processors.static'
+)
 
 
 TEMPLATES = [
@@ -133,5 +134,4 @@ STATIC_URL = '/static/'
 # )
 
 
-CLASSIFICATION_ROOT = 'Classification'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

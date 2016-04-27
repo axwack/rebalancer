@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from equity.models import Account, ClassificationNames, AllocationNodes, AllocationModels, AccountFilters, \
-    SecuritySelectionModels, UserSecuritySelectionModel
+    SecuritySelectionModels, UserSecuritySelectionModel, Feeds
 
 
 class AccountSerializer(serializers.Serializer):
@@ -74,3 +74,9 @@ class UserSecuritySelectionModelSerializers(serializers.ModelSerializer):
         model = UserSecuritySelectionModel()
         fields = '__all__'
         depth = 1
+
+
+class FeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feeds
+        fields = ('feed_cd', 'entity_to_run', 'enable', 'run_date')

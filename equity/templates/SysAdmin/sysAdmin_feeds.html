@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% include 'bootstrap3/layout/help_text_and_errors.html' %}
+
+{% block title %}System Administration{% endblock %}
+
+{{% block nav_active_list %}
+
+    {% if request.user.is_authenticated %}
+        <ul class="nav navbar-nav">
+            <li class=""><a href="{% url 'index' %}">Home</a></li>
+            <li class="dropdown">
+                <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    New Rebalance <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'newRebalance' %}">Create New Rebalance</a></li>
+                    <li><a href="#">Select an Existing Rebalance</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="{% url 'accounts' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    Accounts <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'accountSearchFilter' %}">Create Account Filter</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    Reference Data<span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">Positions</a></li>
+                    <li><a href="#">Tax Lots</a></li>
+                    <li><a href="{% url 'accounts' %}">Accounts</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'securities' %}">Securities</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">
+                    Create AAM/SSM <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'createSecuritySelectionModels' %}">Create New Model</a></li>
+                    <li><a href="{% url 'updateSecuritySelectionModels' %}">Update Existing Model</a></li>
+                    <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+            {% if request.user.is_superuser %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Sys Admin <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'systemFeeds' %}">Feeds</a></li>
+                        <li><a href="{% url 'systemFeeds' %}">Other</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block primary %}
+    <legend>Current Feeds:</legend>
+
+
+    <div class=row>
+        <div class="col-sm-12 col-sm-offset">
+            <div id="showresults"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% comment %}
+            {% crispy sys_admin_feeds_form %}
+            {% endcomment %}
+            <div id="grid"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "kendo/styles/kendo.bootstrap.min.css" %}"/>
+
+    <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+                columns: [{
+                    field: "feed_cd",
+                    title: "Feed Code",
+                    width: "200px"
+                },
+                    {
+                        field: "entity_to_run",
+                        title: "Entity to Run",
+                        width: "300px"
+                    },
+                    {
+                        field: "enable",
+                        title: "Enabled",
+                        width: "200px"
+                    },
+                    {
+                        field: "run_date",
+                        title: "Run Date",
+                        width: "100px"
+                    },],
+                editable: true,
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "{%  url 'systemFeeds' %}",
+                            dataType: "json"
+                        }
+                    },
+                },
+            });
+        });
+    </script>
+
+{% endblock %}

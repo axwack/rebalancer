@@ -478,3 +478,12 @@ class UserSecuritySelectionModel(AL_Node):
 class InvestmentClass(models.Model):
     inv_class_cd = models.CharField(max_length=100, primary_key=True)
     inv_class_name = models.CharField(max_length=200)
+
+
+# SysAdmin Models
+class Feeds(models.Model):
+    feed_cd = models.CharField(max_length=100)
+    entity_to_run = models.CharField(max_length=100)
+    enable = models.BooleanField()
+    run_date = models.DateField()
+    allow_delete = models.BooleanField()

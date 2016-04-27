@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
 
-
-
 {% block nav_active_list %}
 
     {% if request.user.is_authenticated %}
         <ul class="nav navbar-nav">
-            <li class=""><a href="{% url 'home' %}">Home</a></li>
+            <li class=""><a href="{% url 'index' %}">Home</a></li>
             <li class="dropdown">
                 <a href="{% url 'newRebalance' %}" class="dropdown-toggle" data-toggle="dropdown" role="button"
                    aria-haspopup="true"
@@ -53,7 +51,17 @@
                     <li><a href="{% url 'deleteModel' %}">Delete Model</a></li>
                 </ul>
             </li>
-            <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>
+            <li><a href="{% url 'rulesCreation' %}">Rules Creation</a></li>{% if request.user.is_superuser %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false">Sys Admin <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'editSystemFeeds' %}">Feeds</a></li>
+                    <li><a href="{% url 'systemFeeds' %}">Other</a></li>
+                </ul>
+            </li>
+        {% endif %}
         </ul>
     {% endif %}
 
@@ -77,5 +85,4 @@
     </div>
 
 {% endblock %}
-
 {% block content %}{% endblock %}
