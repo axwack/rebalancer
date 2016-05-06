@@ -1,1 +1,0 @@
-web: gunicorn rebalancer.wsgi --log-file -

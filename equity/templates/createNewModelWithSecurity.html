@@ -72,7 +72,7 @@
     <div class =row>
         <div class="col-sm-12 col-sm-offset">
         <div class="page-header">
-            <h3>Model:  <span class="label label-default">{{ securitySelectionModelName }}</span></h3>
+            <h3>Model: <span class="label label-default" id="SSMmodelName">{{ securitySelectionModelName }}</span></h3>
         </div>
         </div>
     </div>
@@ -99,12 +99,60 @@
         </div>
    </div>
 
+    <p class="lead">or Upload a Model via File</p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="upload_form_cont">
+                <form id="upload_form" enctype="multipart/form-data" method="post" action="{% url 'file_upload' %}">
+                    {% csrf_token %}
+                    <div>
+                    </div>
+                    <div><input type="file" name="csv_file" id="csv_file" onchange="fileSelected();"
+                                multiple="multiple"/></div>
+            </div>
+            <div><input type="checkbox" id="includeHeaders"> File has headers? </input></div>
+            <div>
+                <button type="button" class="btn btn-primary" value="Upload" onclick="startUploading()">Upload
+                </button>
+            </div>
+            <div id="fileinfo">
+                <div id="filename"></div>
+                <div id="filesize"></div>
+                <div id="filetype"></div>
+            </div>
+            <div id="error">You should select a valid CSV file only!</div>
+            <div id="error2">An error occurred while uploading the file</div>
+            <div id="abort">The upload has been cancelled by the user or the browser dropped the connection</div>
+            <div id="warnsize">Your file is very big. We can't accept it. Contact the administrator to increase
+                size limits for your instance.
+            </div>
+
+            <div id="progress_info">
+                <div id="progress"></div>
+                <div id="progress_percent">&nbsp;</div>
+                <div class="clear_both"></div>
+                <div>
+                    <div id="speed">&nbsp;</div>
+                    <div id="remaining">&nbsp;</div>
+                    <div id="b_transfered">&nbsp;</div>
+                    <div class="clear_both"></div>
+                </div>
+                <div id="upload_response"></div>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
 {% endblock %}
 
 {% block script %}
 <link rel="stylesheet" href="{% static "kendo/styles/kendo.common.min.css" %}"/>
 <link rel="stylesheet" href="{% static "kendo/styles/kendo.default.min.css"%}"/>
 <script src="{% static "kendo/js/kendo.all.min.js" %}"></script>
+
+    <link href="{% static 'fileupload/fileuploadstyle.css' %}" rel="stylesheet" type="text/css"/>
+    <script src="{% static 'fileupload/file.js' %}"></script>
 
 <script type="text/javascript">
 

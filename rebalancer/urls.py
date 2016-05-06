@@ -67,6 +67,8 @@ urlpatterns = [
     url(r'^updateModelWithTargetWeights/$', equity.views.updateModelWithTargetWeights,
         name='updateModelWithTargetWeights'),
     url(r'^updateModelNodes/$', equity.views.updateModelNodes, name='updateModelNodes'),
+    url(r'^uploadSecuritySelectionModels/', equity.views.uploadSecuritySelectionModels,
+        name='uploadSecuritySelectionModels'),
 
     url(r'^getSSMList/$', equity.views.get_SSMList, name='get_SSMList'),
 

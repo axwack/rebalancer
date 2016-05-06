@@ -104,6 +104,7 @@ class Countries(models.Model):
     def __unicode__(self):
         return self.cntry_name
 
+
 class Currencies(models.Model):
     currencyCd = models.CharField(max_length=100, null=True)
     currencyName = models.CharField(max_length=100, null=True)
