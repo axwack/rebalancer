@@ -184,15 +184,18 @@ function uploadProgress(e) { // upload process in progress
 function uploadFinish(e) { // upload successfully finished
     var oUploadResponse = document.getElementById('upload_response');
 
-    oUploadResponse.innerHTML = e.target.responseText;
     oUploadResponse.style.display = 'block';
     document.getElementById('progress_percent').innerHTML = '100%';
     document.getElementById('progress').style.width = '620px';
     document.getElementById('filesize').innerHTML = sResultFileSize;
     document.getElementById('remaining').innerHTML = '| 00:00:00';
-
+    document.getElementById('speed').innerHTML = '0.00 KB/s'
     clearInterval(oTimer);
     id_array = $.parseJSON(e.target.response);
+
+    if (id_array['status']) {
+        oUploadResponse.innerHTML = "<p class='bg-success'>" + id_array['status'] + "</p>";
+    }
     $('#uploadDoneButton').prop('disabled', false);
 }
 
