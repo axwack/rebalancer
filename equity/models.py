@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from treebeard.al_tree import AL_Node
-from django.core.exceptions import ValidationError
 from equity.validators import validate_tgtWeights
 
 
@@ -160,6 +159,11 @@ class AllocationNodes(models.Model):
 class SecurityType(models.Model):
     secTypCd = models.CharField(primary_key=True, max_length=100)
     secName = models.CharField(max_length=200)
+    pricingMult = models.FloatField(null=True)
+    contractSize = models.IntegerField(null=True)
+    accrualType = models.CharField(max_length=100, null=True)
+    bloombergName = models.CharField(max_length=100, null=True)
+
 
 
 class Identity(models.Model):
@@ -167,7 +171,7 @@ class Identity(models.Model):
     value = models.CharField(max_length=20)
 
 
-class Security(models.Model):
+class Securities(models.Model):
     AL = 'Alabama',
     AK = 'Alaska',
     AZ = 'Arizona',
@@ -271,11 +275,9 @@ class Security(models.Model):
         (WI, 'Wisconsin'),
         (WY, 'Wyoming'),
     )
-
-
     secId = models.IntegerField(primary_key=True)
     extSecId = models.CharField(max_length=100, null=True)
-    secName = models.CharField(max_length=100, blank=False, verbose_name="Security Name")
+    secName = models.CharField(max_length=100, blank=False, verbose_name="Securities Name")
     shortName = models.CharField(max_length=100, null=True, verbose_name="Short Name")
     secType = models.ForeignKey(SecurityType)
     issueState = models.CharField(max_length=100, choices=STATE_CHOICES, verbose_name="Issue State")
@@ -380,13 +382,13 @@ class Security(models.Model):
 
 
 class SecurityClassification(models.Model):
-    secId = models.ForeignKey(Security)
+    secId = models.ForeignKey(Securities)
     classification = models.ForeignKey(ClassificationNames)
 
 
 class TaxLot(models.Model):
     extTaxLotId = models.CharField(max_length=100, null=True)
-    secId = models.ForeignKey(Security)
+    secId = models.ForeignKey(Securities)
     acctCd = models.ForeignKey(Account)
     longOrShort = (('L', 'Long'), ('S', 'Short'))
     tradeDate = models.DateField()
@@ -402,14 +404,14 @@ class Position(models.Model):
     acctCd = models.ForeignKey(Account)  # Account Code	Required	The account that holds this position.
     baseAcctCrncy = models.CharField(max_length=5, blank=False,
                                      default='USD')  # BAC	Required	Base account currency for this account.
-    secId = models.ForeignKey(Security)  # Security ID	Required	Security identifier for this position.
+    secId = models.ForeignKey(Securities)  # Securities ID	Required	Securities identifier for this position.
     baseAcctCrncy = models.CharField(max_length=5, blank=False,
                                      default='USD')  # Currency	Required	Pricing/Settlement currency for this position.
     quantity = models.FloatField(
         blank=False)  # Quantity	Required	Start of Day quantity for this holding. If negative, this indicates a short position.
     mktVal = models.FloatField()  # Market Value	Required	The Start of Day market value of this holding.
-    pledgedQty = models.FloatField()  # Pledged Qty	Optional	Quantity of the security that is pledged as collateral.
-    segQty = models.FloatField()  # Segregated Qty	Optional	Quantity of the security to be segregated from trading.
+    pledgedQty = models.FloatField()  # Pledged Qty	Optional	Quantity of the Securities that is pledged as collateral.
+    segQty = models.FloatField()  # Segregated Qty	Optional	Quantity of the Securities to be segregated from trading.
     origCost = models.FloatField()  # Original Cost	Optional	Original cost of this position.
     origFace = models.FloatField()  # Original Face	Optional	Original face value of this position.
 

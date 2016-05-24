@@ -2,11 +2,11 @@ from django.contrib import admin
 
 # Register your models here.
 
-from equity.models import Security, SecuritySelectionModels, ClassificationNames, Exchanges, Countries, \
+from equity.models import Securities, SecuritySelectionModels, ClassificationNames, Exchanges, Countries, \
     AllocationModels, \
     Currencies
 
-admin.site.register(Security)
+admin.site.register(Securities)
 admin.site.register(SecuritySelectionModels)
 admin.site.register(ClassificationNames)
 admin.site.register(Exchanges)

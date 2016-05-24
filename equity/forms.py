@@ -7,7 +7,7 @@ from crispy_forms.bootstrap import Tab, TabHolder, FormActions
 from equity.models import RebalanceParameters, AccountFilters, ClassificationNames, AccountParameters, \
     SecuritySelectionModels
 from django.utils.translation import ugettext_lazy as _
-from equity.models import Security, Feeds
+from equity.models import Securities, Feeds
 
 
 class ModelNameForm(forms.Form):
@@ -219,7 +219,7 @@ class SecuritiesForm(forms.ModelForm):
         super(SecuritiesForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = Security # Your User model
+        model = Securities  # Your User model
         exclude = ('secId',)
 
 
